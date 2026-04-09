@@ -99,6 +99,32 @@ const bank=[
 {id:58,zh:"而不 / 而沒 / 而沒有",pattern:"Without",answers:["without"],display:"without",note:"後面通常接 noun / V-ing。",exp:"Without 本身已帶否定，所以後面通常唔再加 not。常接名詞或動名詞。",l4en:"He left the room without saying a word to anyone. You cannot pass the exam without studying hard every day.",l4zh:"他沒跟任何人說一句話就離開了房間。如果不每天努力學習，你就無法通過考試。",l5en:"It is virtually impossible to achieve sustainable growth without addressing the fundamental issues of resource depletion and environmental degradation. Innovation rarely occurs in a vacuum without the constant exchange of diverse perspectives and provocative ideas.",l5zh:"如果不解決資源枯竭和環境退化的根本問題，幾乎不可能實現可持續增長。如果沒有多元觀點與啟發性思想的持續交流，創新很難在真空環境中產生。"},
 ];
 const fallback={exp:"此連接詞已加入題庫，之後可以再補更完整教學內容。",l4en:"Example will be added.",l4zh:"例句稍後補上。",l5en:"Advanced example will be added.",l5zh:"進階例句稍後補上。"};
+const answerGroupsMap={
+1:[["since"],["as"],["because"],["mainly because"],["partly because"],["simply because"]],
+2:[["due to"],["thanks to"],["because of"]],
+3:[["and therefore"],["thus"],["hence"],["as a result"],["therefore"]],
+6:[["while"],["despite the fact that"]],
+11:[["on top of that"],["moreover"],["besides"],["what's more","whats more"],["plus"],["furthermore"],["in addition"]],
+12:[["and yet"],["nevertheless"],["nonetheless"],["however"]],
+13:[["be that as it may"],["that said"],["having said that"],["with that said"]],
+18:[["to put it simply"],["simply put"]],
+19:[["it goes without saying that"],["needless to say"]],
+22:[["also"],["as well"]],
+26:[["as mentioned"],["as mentioned above"]],
+29:[["from this line of thinking"],["in this sense"],["with this in mind"]],
+30:[["to begin with"],["first of all"]],
+33:[["as everyone knows"],["it is widely acknowledged that"]],
+35:[["given"],["in view of"],["in light of"]],
+38:[["apart from"],["other than"],["beyond"]],
+39:[["in general"],["generally speaking"]],
+41:[["it is suggested that"],["it is advisable that"]],
+42:[["i earnestly hope that"],["it is hoped that","it is earnestly hoped that"]],
+43:[["such as"],["for example"],["ranging from"],["from"]],
+49:[["as"],["with"],["with the rise of"],["with the advent of"],["with the emergence of"],["with the popularity of"]],
+55:[["to"],["in order to"],["so as to"]],
+56:[["it turns out that"],["it turned out that"]],
+57:[["instead of"],["rather than"]]
+};
 const QN=20,TL=30;let qs=[],i=0,score=0,checked=false,left=TL,timer,wrong=[],hist=[];
 const $=id=>document.getElementById(id),dom={game:$("game"),end:$("end"),n:$("n"),t:$("t"),s:$("s"),fill:$("fill"),tt:$("tt"),main:$("main"),sub:$("sub"),note:$("note"),inputGrid:$("input-grid"),teach:$("teach"),exp:$("exp"),eg4:$("eg4"),eg5:$("eg5"),check:$("check"),next:$("next")};
 const ctx=new(window.AudioContext||window.webkitAudioContext)();
@@ -139,12 +165,13 @@ function splitEn(text){return (text||"").match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[]}
 function splitZh(text){return (text||"").match(/[^。！？]+[。！？]+|[^。！？]+$/g)||[]}
 function renderExamples(title,enText,zhText){const en=splitEn(enText).map(s=>s.trim()).filter(Boolean),zh=splitZh(zhText).map(s=>s.trim()).filter(Boolean),count=Math.max(en.length,zh.length);return `<strong>${title}</strong>${Array.from({length:count},(_,idx)=>`<p>${en[idx]||""}</p><p>${zh[idx]||""}</p>`).join("")}`}
 function getInputs(){return [...dom.inputGrid.querySelectorAll("input")]}
-function buildInputs(q){dom.inputGrid.innerHTML="";q.answers.forEach((_,idx)=>{const input=document.createElement("input");input.autocomplete="off";input.spellcheck=false;input.placeholder=`答案 ${idx+1}`;input.dataset.index=idx;dom.inputGrid.appendChild(input)})}
+function getAnswerGroups(q){return answerGroupsMap[q.id]||q.answers.map(ans=>[ans])}
+function buildInputs(q){const groups=getAnswerGroups(q);dom.inputGrid.innerHTML="";groups.forEach((_,idx)=>{const input=document.createElement("input");input.autocomplete="off";input.spellcheck=false;input.placeholder=`答案 ${idx+1}`;input.dataset.index=idx;dom.inputGrid.appendChild(input)})}
 function renderTeach(q){const d={...fallback,...q};dom.exp.textContent=d.exp;dom.eg4.innerHTML=renderExamples("Level 4",d.l4en,d.l4zh);dom.eg5.innerHTML=renderExamples("Level 5",d.l5en,d.l5zh);dom.note.innerText=q.note||"";dom.note.style.display="block";dom.sub.innerText=q.pattern||"";dom.sub.style.display=q.pattern?"block":"none";dom.teach.style.display="block"}
 function load(){if(i>=qs.length)return end();checked=false;dom.check.style.display="block";dom.next.style.display="none";dom.check.disabled=false;document.querySelectorAll(".ans").forEach(x=>x.remove());dom.teach.style.display="none";dom.note.style.display="none";dom.sub.style.display="none";const q=qs[i];buildInputs(q);const inputs=getInputs();inputs.forEach(input=>{input.value="";input.className="";input.disabled=false});dom.main.innerText=q.zh;dom.n.innerText=i+1;dom.s.innerText=score;inputs[0]?.focus();start()}
 function start(){clearInterval(timer);left=TL;ui();timer=setInterval(()=>{left-=.1;if(left<=0){left=0;check(true)}ui()},100)}
 function ui(){dom.tt.innerText=left.toFixed(1);dom.fill.style.width=(left/TL*100)+"%";dom.fill.style.background=left<5?"var(--danger)":"var(--p)"}
-function check(timeout=false){if(checked)return;checked=true;clearInterval(timer);dom.check.disabled=true;const q=qs[i],inputs=getInputs(),expected=q.answers.map(normLoose),remaining=[...expected];let ok=true;inputs.forEach(input=>{const value=normLoose(input.value);if(!value){ok=false;input.classList.add("bad");return}const idx=remaining.indexOf(value);if(idx>-1){remaining.splice(idx,1);input.classList.add("ok")}else{ok=false;input.classList.add("bad")}});if(remaining.length)ok=false;const userText=inputs.map(x=>x.value.trim()||"(留空)").join(" / ");if(ok&&!timeout){score++;sfx.ok()}else{const hint=document.createElement("span");hint.className="ans";hint.innerText=q.display;dom.inputGrid.insertAdjacentElement("afterend",hint);if(!wrong.includes(q))wrong.push(q);hist.push([q.zh,q.pattern||"",userText,q.display]);timeout?sfx.timeout():sfx.bad()}renderTeach(q);inputs.forEach(x=>x.disabled=true);dom.s.innerText=score;dom.check.style.display="none";dom.next.style.display="block"}
+function check(timeout=false){if(checked)return;checked=true;clearInterval(timer);dom.check.disabled=true;const q=qs[i],inputs=getInputs(),groups=getAnswerGroups(q).map(group=>group.map(normLoose)),remaining=[...groups];let ok=true;inputs.forEach(input=>{const value=normLoose(input.value);if(!value){ok=false;input.classList.add("bad");return}const idx=remaining.findIndex(group=>group.includes(value));if(idx>-1){remaining.splice(idx,1);input.classList.add("ok")}else{ok=false;input.classList.add("bad")}});if(remaining.length)ok=false;const userText=inputs.map(x=>x.value.trim()||"(留空)").join(" / ");if(ok&&!timeout){score++;sfx.ok()}else{const hint=document.createElement("span");hint.className="ans";hint.innerText=q.display;dom.inputGrid.insertAdjacentElement("afterend",hint);if(!wrong.includes(q))wrong.push(q);hist.push([q.zh,q.pattern||"",userText,q.display]);timeout?sfx.timeout():sfx.bad()}renderTeach(q);inputs.forEach(x=>x.disabled=true);dom.s.innerText=score;dom.check.style.display="none";dom.next.style.display="block"}
 function retry(){if(!wrong.length)return alert("暫時沒有錯題可以重做。");init(true)}
 function end(){dom.game.style.display="none";dom.end.style.display="block";const max=qs.length,p=max?Math.round(score/max*100):0;const detail=hist.length?`<div class="analysis"><h3 style="color:var(--danger);margin-top:0">錯題分析 (${hist.length} 題)</h3>${hist.map(x=>`<div class="item"><div class="title">${x[0]}</div><div class="row">提示：${x[1]}</div><div class="row">你的答案：${x[2]}</div><div class="row">可接受答案：${x[3]}</div></div>`).join("")}</div>`:`<h3 style="color:var(--s);margin-top:30px">完美，全對。</h3>`;dom.end.innerHTML=`<h1>Challenge Complete!</h1><div class="score">得分: ${score} / ${max} (${p}%)</div>${detail}<div class="rctrl"><button class="rbtn menu" type="button" onclick="history.back()">返回</button>${wrong.length?`<button class="rbtn retry" type="button" onclick="retry()">重做錯題</button>`:""}<button class="rbtn restart" type="button" onclick="init(false)">重新開始</button></div>`}
 dom.check.onclick=()=>{sfx.tap();check(false)};dom.next.onclick=()=>{sfx.next();i++;load()};document.addEventListener("pointerdown",ensureAudio,{once:true});document.addEventListener("keydown",e=>{if(e.key==="Enter"){const inputs=getInputs(),currentIndex=inputs.indexOf(document.activeElement);if(currentIndex>-1&&currentIndex<inputs.length-1&&!inputs[currentIndex+1].disabled){e.preventDefault();sfx.tap();inputs[currentIndex+1].focus();return}e.preventDefault();if(dom.check.style.display!=="none"&&!dom.check.disabled){sfx.tap();check(false)}else if(dom.next.style.display!=="none"){sfx.next();i++;load()}}});init();
