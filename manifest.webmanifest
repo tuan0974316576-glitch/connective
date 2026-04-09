@@ -1,0 +1,19 @@
+{
+  "name": "DSE 連接詞挑戰",
+  "short_name": "連接詞挑戰",
+  "description": "幫學生操練 DSE 連接詞的可安裝練習遊戲。",
+  "start_url": "./eng_game_connectives.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f1f3f3",
+  "theme_color": "#0a9396",
+  "icons": [
+    {
+      "src": "./icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
