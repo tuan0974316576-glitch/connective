@@ -141,6 +141,10 @@ tap:()=>tone(420,"sine",.04,.03),
 timeout:()=>{tone(260,"square",.12,.07);setTimeout(()=>tone(220,"square",.12,.06),100);setTimeout(()=>tone(180,"square",.18,.06),200)}
 };
 const norm=v=>v.toLowerCase()
+.replace(/\bas it sounds\b/g," as subject sounds")
+.replace(/\bas this sounds\b/g," as subject sounds")
+.replace(/\bas it looks\b/g," as subject looks")
+.replace(/\bas this looks\b/g," as subject looks")
 .replace(/it is earnestly hoped that/g,"it is hoped that")
 .replace(/（/g,"(").replace(/）/g,")")
 .replace(/主語/g,"subject").replace(/subj/g,"subject")
