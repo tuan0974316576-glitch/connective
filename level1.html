@@ -75,30 +75,8 @@ body{
   padding:18px;
   box-shadow:0 0 0 6px #fff,0 10px 20px rgba(78,205,196,.15);
 }
-.eyebrow{
-  display:inline-block;
-  padding:7px 12px;
-  border-radius:999px;
-  background:#fffdf5;
-  color:var(--primary-dark);
-  font-size:11px;
-  font-weight:900;
-  letter-spacing:.08em;
-}
-h1{
-  margin:12px 0 6px;
-  font-size:28px;
-  line-height:1.08;
-  color:var(--primary-dark);
-}
-.sub{
-  margin:0;
-  color:#666;
-  font-size:13px;
-  line-height:1.55;
-}
 .question{
-  margin-top:14px;
+  margin-top:2px;
   padding:16px;
   border-radius:24px;
   background:#fff;
@@ -111,22 +89,26 @@ h1{
   line-height:1.12;
   font-weight:900;
   color:var(--primary-dark);
+  text-align:center;
 }
 .pattern{
+  display:none;
   margin:8px 0 0;
   color:#666;
   font-size:13px;
   line-height:1.5;
+  text-align:center;
 }
 .choices{
   display:grid;
   gap:10px;
   margin-top:14px;
+  transition:all .25s ease;
 }
 .choice{
   width:100%;
   padding:15px 16px;
-  text-align:left;
+  text-align:center;
   border:3px dashed var(--line);
   border-radius:50px;
   background:#fff;
@@ -155,6 +137,16 @@ h1{
   color:var(--primary-dark);
   transform:translateY(-2px);
 }
+.choices.compact{
+  gap:8px;
+}
+.choice.keep{
+  animation:keepChoice .28s ease;
+}
+@keyframes keepChoice{
+  from{opacity:.35;transform:translateY(8px) scale(.96)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
 .teach{
   display:none;
   margin-top:14px;
@@ -163,6 +155,11 @@ h1{
   background:#f8f9fa;
   border:2px dashed var(--line);
   box-shadow:0 4px 0 rgba(0,0,0,.05);
+  animation:teachRise .3s ease;
+}
+@keyframes teachRise{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
 }
 .line{
   margin:0 0 10px;
@@ -277,10 +274,6 @@ if("serviceWorker" in navigator){
     </div>
 
     <div class="screen">
-      <span class="eyebrow">LEVEL 1</span>
-      <h1><strong>選擇題</strong></h1>
-      <p class="sub">中文 → 揀英文</p>
-
       <section class="question">
         <p id="promptZh" class="zh">載入中...</p>
         <p id="promptPattern" class="pattern"></p>
@@ -309,8 +302,7 @@ if("serviceWorker" in navigator){
 
   <section id="end" class="end">
     <div class="screen">
-      <span class="eyebrow">LEVEL 1</span>
-      <h1><strong>完成</strong></h1>
+      <h1 style="margin:0 0 8px;text-align:center;color:var(--primary-dark);font-size:30px;"><strong>完成</strong></h1>
       <div id="finalScore" class="score"></div>
       <div id="review" class="review"></div>
       <div class="actions">
@@ -433,12 +425,13 @@ function showQuestion(){
   answered=false;
   $("nextBtn").disabled=true;
   $("teach").style.display="none";
+  $("choices").classList.remove("compact");
   const item=questions[index];
   $("currentNo").textContent=index+1;
   $("totalNo").textContent=questions.length;
   $("scoreNo").textContent=score;
   $("promptZh").textContent=item.zh;
-  $("promptPattern").textContent=item.pattern||"";
+  $("promptPattern").textContent="";
   const correct=getCorrectOption(item);
   const options=uniqueOptions(correct,item.id);
   $("choices").innerHTML=options.map(option=>`<button class="choice" type="button">${option}</button>`).join("");
@@ -452,20 +445,23 @@ function checkAnswer(button,item,correct){
   const chosen=button.textContent.trim();
   const correctButtons=[...$("choices").querySelectorAll(".choice")].filter(btn=>btn.textContent.trim()===correct);
   const isCorrect=chosen===correct;
+  const keptOptions=isCorrect?[correct]:[chosen,correct].filter((value,idx,array)=>array.indexOf(value)===idx);
   if(isCorrect){
     score++;
-    button.classList.add("correct");
     sfx.ok();
   }else{
-    button.classList.add("wrong");
-    correctButtons.forEach(btn=>btn.classList.add("correct"));
     reviewLog.push({zh:item.zh,chosen,correct});
     sfx.bad();
   }
-  [...$("choices").querySelectorAll(".choice")].forEach(btn=>{
-    btn.disabled=true;
-    if(!btn.classList.contains("correct")&&!btn.classList.contains("wrong")) btn.classList.add("dim");
-  });
+  $("choices").classList.add("compact");
+  $("choices").innerHTML=keptOptions.map(option=>{
+    const cls=isCorrect
+      ? "choice correct keep"
+      : option===correct
+        ? "choice correct keep"
+        : "choice wrong keep";
+    return `<button class="${cls}" type="button" disabled>${option}</button>`;
+  }).join("");
   renderTeach(item,correct,isCorrect,chosen);
   $("scoreNo").textContent=score;
   $("nextBtn").disabled=false;
