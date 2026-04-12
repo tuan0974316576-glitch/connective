@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a9396">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon-512-maskable.png" type="image/png">
+<link rel="apple-touch-icon" href="./icon-512-maskable.png">
+<title>DSE 連接詞溫習表</title>
+<style>
+:root{
+  --bg:#f6f1e7;
+  --paper:#fffdf8;
+  --ink:#20343c;
+  --muted:#5b6e74;
+  --line:#d9c9af;
+  --teal:#0a9396;
+  --teal-deep:#005f73;
+  --gold:#e9c46a;
+  --gold-soft:#f8edcd;
+  --rose:#f7d9d0;
+  --mint:#dff3ec;
+  --shadow:0 14px 34px rgba(39,51,56,.10);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:"Segoe UI","Noto Sans TC",sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at top left,rgba(233,196,106,.25),transparent 28%),
+    radial-gradient(circle at top right,rgba(10,147,150,.14),transparent 24%),
+    linear-gradient(180deg,#fbf7ef 0%,#f2ede2 100%);
+  padding:20px;
+}
+.shell{width:min(1240px,100%);margin:0 auto}
+.hero{
+  background:linear-gradient(135deg,rgba(255,253,248,.96),rgba(249,244,232,.96));
+  border:2px solid var(--line);
+  border-radius:28px;
+  padding:28px;
+  box-shadow:var(--shadow);
+}
+.hero-top{
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  justify-content:space-between;
+  flex-wrap:wrap;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:var(--gold-soft);
+  color:#9a6700;
+  font-weight:800;
+  letter-spacing:.04em;
+  border-radius:999px;
+  padding:8px 14px;
+  font-size:12px;
+}
+.hero h1{
+  margin:14px 0 10px;
+  font-size:clamp(32px,5vw,54px);
+  line-height:1.02;
+  color:var(--teal-deep);
+}
+.hero p{
+  margin:0;
+  max-width:760px;
+  color:var(--muted);
+  line-height:1.8;
+  font-size:15px;
+}
+.hero-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.btn{
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  min-width:132px;
+  padding:12px 16px;
+  border-radius:14px;
+  font-weight:800;
+  text-decoration:none;
+  border:2px solid transparent;
+  transition:.15s transform,.15s background-color,.15s color;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--teal);color:#fff}
+.btn-primary:hover{background:var(--teal-deep)}
+.btn-secondary{background:#fff;color:var(--teal-deep);border-color:var(--line)}
+.summary{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:12px;
+}
+.summary-card{
+  background:rgba(255,255,255,.72);
+  border:1px solid #eadbc4;
+  border-radius:18px;
+  padding:14px 16px;
+}
+.summary-card strong{
+  display:block;
+  color:var(--teal-deep);
+  font-size:24px;
+  margin-bottom:4px;
+}
+.summary-card span{
+  color:var(--muted);
+  font-size:13px;
+}
+.toolbar{
+  margin:18px 0;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.search{
+  flex:1 1 320px;
+  background:var(--paper);
+  border:2px solid var(--line);
+  border-radius:16px;
+  padding:14px 16px;
+  font-size:16px;
+}
+.hint{
+  color:var(--muted);
+  font-size:13px;
+}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:18px;
+}
+.card{
+  display:flex;
+  flex-direction:column;
+  min-height:100%;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,251,243,.98));
+  border:2px solid #e7d7be;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.card-head{
+  padding:18px 18px 14px;
+  background:
+    linear-gradient(135deg,rgba(10,147,150,.08),rgba(233,196,106,.10));
+  border-bottom:1px dashed #d8c4a6;
+}
+.chip{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:56px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:var(--teal-deep);
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.04em;
+}
+.zh{
+  margin:12px 0 6px;
+  font-size:27px;
+  line-height:1.18;
+  color:#183640;
+}
+.pattern{
+  font-size:15px;
+  color:var(--muted);
+  line-height:1.7;
+}
+.card-body{
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.block{
+  background:#fff;
+  border:1px solid #ecdcc4;
+  border-radius:16px;
+  padding:14px;
+}
+.block-label{
+  display:inline-block;
+  margin-bottom:8px;
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.04em;
+}
+.answer-label{background:var(--gold-soft);color:#9a6700}
+.note-label{background:var(--mint);color:#136f63}
+.example-label{background:var(--rose);color:#a1462d}
+.answer{
+  font-size:21px;
+  font-weight:800;
+  color:var(--teal-deep);
+  line-height:1.45;
+}
+.note{
+  color:var(--ink);
+  line-height:1.75;
+  font-size:14px;
+}
+.examples{
+  display:grid;
+  gap:10px;
+}
+.example-group{
+  background:#fffdf8;
+  border:1px dashed #dec8a7;
+  border-radius:14px;
+  padding:12px;
+}
+.example-group h3{
+  margin:0 0 8px;
+  font-size:14px;
+  color:var(--teal-deep);
+}
+.example{
+  padding:10px 0;
+  border-top:1px solid #f0e4d1;
+}
+.example:first-of-type{border-top:none;padding-top:0}
+.en{
+  margin:0 0 6px;
+  line-height:1.65;
+  font-size:14px;
+}
+.zh-line{
+  margin:0;
+  line-height:1.65;
+  font-size:14px;
+  color:var(--muted);
+}
+.empty{
+  display:none;
+  background:rgba(255,255,255,.8);
+  border:2px dashed #dbc7aa;
+  border-radius:20px;
+  padding:28px;
+  text-align:center;
+  color:var(--muted);
+}
+@media(max-width:760px){
+  body{padding:14px}
+  .hero{padding:22px}
+  .cards{grid-template-columns:1fr}
+  .zh{font-size:24px}
+  .answer{font-size:19px}
+}
+</style>
+<script>
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>{navigator.serviceWorker.register("./service-worker.js").catch(()=>{})});
+}
+</script>
+</head>
+<body>
+<main class="shell">
+  <section class="hero">
+    <div class="hero-top">
+      <div>
+        <div class="badge">REVISION NOTE CARDS</div>
+        <h1>DSE 連接詞溫習表</h1>
+        <p>每張卡會列出中文意思、核心英文用法，同卡底分開擺 `Level 4` 同 `Level 5` 例句。學生可以先掃一輪重點，再入測驗模式練習。</p>
+      </div>
+      <div class="hero-actions">
+        <a class="btn btn-secondary" href="./index.html">返回 Main Menu</a>
+        <a class="btn btn-primary" href="./eng_game_connectives.html">去 Level 2 練習</a>
+      </div>
+    </div>
+    <div class="summary" id="summary"></div>
+  </section>
+
+  <section class="toolbar">
+    <input id="search" class="search" type="search" placeholder="搜尋中文 / 英文，例如 because、therefore、雖然、因此">
+    <div class="hint">提示：可搜尋中文題面、英文答案、用法或例句關鍵字。</div>
+  </section>
+
+  <section id="cards" class="cards"></section>
+  <section id="empty" class="empty">搵唔到相符 note card，試下換另一個關鍵字。</section>
+</main>
+
+<script>
+const fallback={
+  exp:"此連接詞已加入題庫，之後可再補更完整教學內容。",
+  l4en:"Example will be added.",
+  l4zh:"例句稍後補上。",
+  l5en:"Advanced example will be added.",
+  l5zh:"進階例句稍後補上。"
+};
+
+function splitEn(text){
+  return (text||"").match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[];
+}
+
+function splitZh(text){
+  return (text||"").match(/[^。！？]+[。！？]+|[^。！？]+$/g)||[];
+}
+
+function parseExamples(enText,zhText){
+  const en=splitEn(enText).map(s=>s.trim()).filter(Boolean);
+  const zh=splitZh(zhText).map(s=>s.trim()).filter(Boolean);
+  const count=Math.max(en.length,zh.length);
+  return Array.from({length:count},(_,idx)=>({
+    en:en[idx]||"",
+    zh:zh[idx]||""
+  }));
+}
+
+function escapeHtml(value){
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+}
+
+async function loadBank(){
+  const response=await fetch("./eng_game_connectives.html",{cache:"no-store"});
+  const html=await response.text();
+  const match=html.match(/(const bank=\[[\s\S]*?\];)\s*const fallback=/);
+  if(!match) throw new Error("bank not found");
+  return new Function(match[1] + "return bank;")();
+}
+
+function createExamples(title,enText,zhText){
+  const examples=parseExamples(enText,zhText).map(item=>`
+    <div class="example">
+      <p class="en">${escapeHtml(item.en)}</p>
+      <p class="zh-line">${escapeHtml(item.zh)}</p>
+    </div>
+  `).join("");
+  return `
+    <section class="example-group">
+      <h3>${title}</h3>
+      ${examples}
+    </section>
+  `;
+}
+
+function renderSummary(items){
+  const questionCount=items.length;
+  const splitCount=items.filter(item=>/[a-z]$/i.test(String(item.id))).length;
+  const summary=document.getElementById("summary");
+  summary.innerHTML=[
+    {value:questionCount,label:"目前卡片總數"},
+    {value:"Level 4",label:"每張卡都有基礎例句"},
+    {value:"Level 5",label:"每張卡都有進階例句"},
+    {value:splitCount,label:"拆題後獨立卡數"}
+  ].map(item=>`
+    <div class="summary-card">
+      <strong>${escapeHtml(item.value)}</strong>
+      <span>${escapeHtml(item.label)}</span>
+    </div>
+  `).join("");
+}
+
+function renderCards(items){
+  const cards=document.getElementById("cards");
+  const empty=document.getElementById("empty");
+  cards.innerHTML=items.map((item,index)=>{
+    const data={...fallback,...item};
+    const display=data.display||data.pattern||"";
+    return `
+      <article class="card" data-search="${escapeHtml([
+        data.zh,data.pattern,data.display,data.note,data.exp,data.l4en,data.l4zh,data.l5en,data.l5zh
+      ].join(" ").toLowerCase())}">
+        <header class="card-head">
+          <span class="chip">${escapeHtml(String(data.id||index+1))}</span>
+          <h2 class="zh">${escapeHtml(data.zh||"")}</h2>
+          <div class="pattern">${escapeHtml(data.pattern||"")}</div>
+        </header>
+        <div class="card-body">
+          <section class="block">
+            <span class="block-label answer-label">Core Answer</span>
+            <div class="answer">${escapeHtml(display)}</div>
+          </section>
+          <section class="block">
+            <span class="block-label note-label">Usage Note</span>
+            <div class="note">${escapeHtml(data.note||data.exp||"")}</div>
+          </section>
+          <section class="block">
+            <span class="block-label example-label">Examples</span>
+            <div class="examples">
+              ${createExamples("Level 4",data.l4en,data.l4zh)}
+              ${createExamples("Level 5",data.l5en,data.l5zh)}
+            </div>
+          </section>
+        </div>
+      </article>
+    `;
+  }).join("");
+  empty.style.display=items.length?"none":"block";
+}
+
+function attachSearch(){
+  const input=document.getElementById("search");
+  const cards=[...document.querySelectorAll(".card")];
+  const empty=document.getElementById("empty");
+  input.addEventListener("input",()=>{
+    const keyword=input.value.trim().toLowerCase();
+    let shown=0;
+    cards.forEach(card=>{
+      const visible=!keyword || card.dataset.search.includes(keyword);
+      card.style.display=visible?"flex":"none";
+      if(visible) shown++;
+    });
+    empty.style.display=shown?"none":"block";
+  });
+}
+
+loadBank()
+  .then(items=>{
+    renderSummary(items);
+    renderCards(items);
+    attachSearch();
+  })
+  .catch(()=>{
+    document.getElementById("cards").innerHTML="";
+    document.getElementById("empty").style.display="block";
+    document.getElementById("empty").textContent="載入題庫失敗，請 refresh 再試。";
+  });
+</script>
+</body>
+</html>
