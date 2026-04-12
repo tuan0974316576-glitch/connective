@@ -3,67 +3,202 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0a9396">
+<meta name="theme-color" content="#7f9c96">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon-512-maskable.png" type="image/png">
 <link rel="apple-touch-icon" href="./icon-512-maskable.png">
-<title>DSE 連接詞挑戰</title>
+<title>DSE Connective App</title>
 <style>
-:root{--bg:#f1f3f3;--p:#0a9396;--pd:#005f73;--s:#2d6a4f;--bd:#ced4da;--card:#ffffff;--muted:#5f6c72;--soft:#e6f1f0;--warm:#f4a261}*{box-sizing:border-box}html,body{margin:0;min-height:100%}body{font-family:"Segoe UI","Noto Sans TC",sans-serif;background:radial-gradient(circle at top,#f8fbfb 0,#edf4f4 45%,#dde9e8 100%);color:#16323f;display:flex;justify-content:center;padding:24px}.shell{width:min(960px,100%)}.hero{background:linear-gradient(135deg,#ffffff 0,#eef7f6 100%);border:2px solid var(--bd);border-radius:20px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,.08);margin-bottom:18px}.badge{display:inline-block;background:#dff3f3;color:var(--pd);font-weight:800;border-radius:999px;padding:8px 14px;font-size:13px;letter-spacing:.04em}.hero h1{margin:14px 0 10px;font-size:42px;line-height:1.05;color:var(--pd)}.hero p{margin:0;color:var(--muted);font-size:16px;line-height:1.7;max-width:680px}.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}.menu-card{background:var(--card);border:2px solid var(--bd);border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:12px}.menu-card h2{margin:0;color:var(--pd);font-size:22px}.menu-card p{margin:0;color:var(--muted);line-height:1.6;font-size:14px;min-height:66px}.meta{font-size:12px;font-weight:800;color:#cf5c36;letter-spacing:.04em}.actions{margin-top:auto}.btn{display:inline-flex;justify-content:center;align-items:center;width:100%;padding:13px 16px;border-radius:12px;font-weight:800;text-decoration:none;border:2px solid transparent;transition:.15s transform,.15s background-color,.15s color}.btn:hover{transform:translateY(-1px)}.btn-primary{background:var(--p);color:#fff}.btn-primary:hover{background:var(--pd)}.btn-secondary{background:#fff;color:var(--p);border-color:var(--p)}.btn-secondary:hover{background:#ecfbfb}.btn-disabled{background:#eef1f2;color:#95a3aa;border-color:#d6dde0;cursor:not-allowed}.footer-note{margin-top:18px;background:var(--soft);border-radius:14px;padding:16px 18px;color:#33505c;font-size:14px;line-height:1.7}.footer-note strong{color:var(--pd)}@media(max-width:700px){body{padding:14px}.hero{padding:22px}.hero h1{font-size:32px}.menu-grid{grid-template-columns:1fr}}
+:root{
+  --bg:#f7f3eb;
+  --panel:#fffdf8;
+  --ink:#24313a;
+  --muted:#6d7b80;
+  --line:#ddd4c5;
+  --sage:#7f9c96;
+  --sage-deep:#5e7772;
+  --pink:#e7d6d0;
+  --cream:#f4ecde;
+  --white:#ffffff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:"Segoe UI","Noto Sans TC",sans-serif;
+  background:
+    radial-gradient(circle at top left,rgba(231,214,208,.55),transparent 34%),
+    linear-gradient(180deg,#fbf8f2 0%,#f3eee4 100%);
+  color:var(--ink);
+  padding:14px;
+}
+.app{
+  width:min(460px,100%);
+  margin:0 auto;
+}
+.hero{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:20px;
+  box-shadow:0 14px 30px rgba(60,66,70,.08);
+}
+.eyebrow{
+  display:inline-block;
+  padding:7px 12px;
+  border-radius:999px;
+  background:var(--cream);
+  color:var(--sage-deep);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+h1{
+  margin:12px 0 6px;
+  font-size:34px;
+  line-height:1.02;
+  font-weight:900;
+}
+.sub{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
+.grid{
+  display:grid;
+  gap:12px;
+  margin-top:14px;
+}
+.card{
+  display:block;
+  text-decoration:none;
+  color:inherit;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:16px;
+  box-shadow:0 10px 24px rgba(60,66,70,.06);
+}
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+.tag{
+  display:inline-block;
+  min-width:64px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:var(--sage);
+  color:#fff;
+  font-size:11px;
+  font-weight:900;
+  text-align:center;
+}
+.tag.soft{
+  background:var(--pink);
+  color:#6f5650;
+}
+.title{
+  margin:10px 0 0;
+  font-size:22px;
+  font-weight:900;
+}
+.desc{
+  margin:8px 0 0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.55;
+}
+.arrow{
+  font-size:20px;
+  color:var(--sage-deep);
+  font-weight:900;
+}
+.card.disabled{
+  opacity:.58;
+}
+.footer{
+  margin-top:12px;
+  padding:14px 16px;
+  border-radius:20px;
+  background:rgba(255,253,248,.78);
+  border:1px solid var(--line);
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+strong{font-weight:900}
+@media(min-width:700px){
+  body{padding:24px}
+  .app{width:min(980px,100%)}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 </style>
 <script>
 if("serviceWorker" in navigator){
-window.addEventListener("load",()=>{navigator.serviceWorker.register("./service-worker.js").catch(()=>{})});
+  window.addEventListener("load",()=>{navigator.serviceWorker.register("./service-worker.js").catch(()=>{})});
 }
 </script>
 </head>
 <body>
-<main class="shell">
+<main class="app">
   <section class="hero">
-    <div class="badge">MAIN MENU</div>
-    <h1>DSE 連接詞挑戰</h1>
-    <p>揀你想用嘅模式開始。今步先做好主選單框架，方便之後逐個 mode 擴充。現階段 <strong>Level 2</strong> 已可玩，其餘入口先預留位置。</p>
+    <span class="eyebrow">MAIN MENU</span>
+    <h1><strong>DSE</strong><br><strong>Connective</strong></h1>
+    <p class="sub">手機優先。簡潔。直接開始。</p>
   </section>
 
-  <section class="menu-grid">
-    <article class="menu-card">
-      <div class="meta">REVISION</div>
-      <h2>溫習表</h2>
-      <p>顯示晒所有連接詞、意思、用法同例句，俾學生先溫後操。</p>
-      <div class="actions"><a class="btn btn-primary" href="./revision.html">打開溫習表</a></div>
-    </article>
+  <section class="grid">
+    <a class="card" href="./revision.html">
+      <div class="card-top">
+        <span class="tag soft">NOTE</span>
+        <span class="arrow">›</span>
+      </div>
+      <p class="title"><strong>溫習表</strong></p>
+      <p class="desc">note card + 例句</p>
+    </a>
 
-    <article class="menu-card">
-      <div class="meta">LEVEL 1</div>
-      <h2>選擇題</h2>
-      <p>俾中文連接詞，學生從選項中揀返正確英文。</p>
-      <div class="actions"><a class="btn btn-primary" href="./level1.html">開始 Level 1</a></div>
-    </article>
+    <a class="card" href="./level1.html">
+      <div class="card-top">
+        <span class="tag">LEVEL 1</span>
+        <span class="arrow">›</span>
+      </div>
+      <p class="title"><strong>選擇題</strong></p>
+      <p class="desc">中文 → 揀英文</p>
+    </a>
 
-    <article class="menu-card">
-      <div class="meta">LEVEL 2</div>
-      <h2>直接輸入</h2>
-      <p>俾中文連接詞，學生直接打英文答案。現有完整玩法會由呢度進入。</p>
-      <div class="actions"><a class="btn btn-primary" href="./eng_game_connectives.html">開始 Level 2</a></div>
-    </article>
+    <a class="card" href="./eng_game_connectives.html">
+      <div class="card-top">
+        <span class="tag">LEVEL 2</span>
+        <span class="arrow">›</span>
+      </div>
+      <p class="title"><strong>直接打字</strong></p>
+      <p class="desc">中文 → 打英文</p>
+    </a>
 
-    <article class="menu-card">
-      <div class="meta">LEVEL 3</div>
-      <h2>句子選擇題</h2>
-      <p>俾英文句子，再揀最合適嘅連接詞，訓練語境判斷。</p>
-      <div class="actions"><span class="btn btn-disabled">Coming Soon</span></div>
-    </article>
+    <div class="card disabled">
+      <div class="card-top">
+        <span class="tag soft">LEVEL 3</span>
+        <span class="arrow">…</span>
+      </div>
+      <p class="title"><strong>句子選擇</strong></p>
+      <p class="desc">English sentence → 揀 connectives</p>
+    </div>
 
-    <article class="menu-card">
-      <div class="meta">LEVEL 4</div>
-      <h2>句子填空</h2>
-      <p>俾英文句子同橫線，學生自己打返缺少嘅連接詞。</p>
-      <div class="actions"><span class="btn btn-disabled">Coming Soon</span></div>
-    </article>
+    <div class="card disabled">
+      <div class="card-top">
+        <span class="tag soft">LEVEL 4</span>
+        <span class="arrow">…</span>
+      </div>
+      <p class="title"><strong>句子填空</strong></p>
+      <p class="desc">English sentence → 填答案</p>
+    </div>
   </section>
 
-  <section class="footer-note">
-    <strong>下一步建議：</strong>先做統一題庫結構，再接上溫習表、Level 1、Level 3、Level 4。咁之後每個 mode 都可以共用同一批內容。
+  <section class="footer">
+    <strong>App feel</strong>：加到主畫面後會更似原生 app。
   </section>
 </main>
 </body>

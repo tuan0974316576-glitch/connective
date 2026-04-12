@@ -3,232 +3,239 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0a9396">
+<meta name="theme-color" content="#7f9c96">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon-512-maskable.png" type="image/png">
 <link rel="apple-touch-icon" href="./icon-512-maskable.png">
-<title>DSE 連接詞 Level 1</title>
+<title>DSE Level 1</title>
 <style>
 :root{
-  --bg:#f2f5f6;
-  --card:#ffffff;
-  --border:#cfd8dc;
-  --primary:#0a9396;
-  --primary-deep:#005f73;
-  --ok:#d8f3dc;
-  --bad:#fde2e4;
-  --warn:#f4a261;
-  --ink:#183640;
-  --muted:#61727a;
+  --bg:#f7f3eb;
+  --panel:#fffdf8;
+  --ink:#24313a;
+  --muted:#6d7b80;
+  --line:#ddd4c5;
+  --sage:#7f9c96;
+  --sage-deep:#5e7772;
+  --pink:#ead8d3;
+  --ok:#dcebe4;
+  --bad:#f3ddda;
+  --cream:#f4ecde;
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%}
 body{
   font-family:"Segoe UI","Noto Sans TC",sans-serif;
   background:
-    radial-gradient(circle at top left,rgba(10,147,150,.10),transparent 24%),
-    radial-gradient(circle at top right,rgba(244,162,97,.12),transparent 24%),
-    linear-gradient(180deg,#f7fbfb 0%,#edf3f4 100%);
+    radial-gradient(circle at top left,rgba(231,214,208,.55),transparent 34%),
+    linear-gradient(180deg,#fbf8f2 0%,#f3eee4 100%);
   color:var(--ink);
-  padding:20px;
+  padding:14px;
 }
-.shell{width:min(980px,100%);margin:0 auto}
-.panel{
-  background:var(--card);
-  border:2px solid var(--border);
-  border-radius:24px;
-  padding:22px;
-  box-shadow:0 16px 36px rgba(0,0,0,.07);
-}
+.app{width:min(560px,100%);margin:0 auto}
 .topbar{
   display:flex;
-  gap:12px;
   align-items:center;
-  flex-wrap:wrap;
-  margin-bottom:18px;
-}
-.badge{
-  display:inline-block;
-  background:#dff3f3;
-  color:var(--primary-deep);
-  font-size:12px;
-  font-weight:800;
-  letter-spacing:.04em;
-  border-radius:999px;
-  padding:8px 14px;
-}
-.stats{
-  margin-left:auto;
-  display:flex;
+  justify-content:space-between;
   gap:10px;
-  flex-wrap:wrap;
+  margin-bottom:12px;
+}
+.back{
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  width:44px;
+  height:44px;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  color:var(--sage-deep);
+  text-decoration:none;
+  font-size:22px;
+  font-weight:900;
+}
+.scorebar{
+  display:flex;
+  gap:8px;
 }
 .pill{
-  background:#f4f8f8;
-  border:1px solid var(--border);
-  border-radius:999px;
   padding:8px 12px;
-  font-size:13px;
-  font-weight:700;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  font-size:12px;
+  font-weight:900;
+}
+.screen{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:18px;
+  box-shadow:0 12px 26px rgba(60,66,70,.07);
+}
+.eyebrow{
+  display:inline-block;
+  padding:7px 12px;
+  border-radius:999px;
+  background:var(--cream);
+  color:var(--sage-deep);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.08em;
 }
 h1{
-  margin:0 0 8px;
-  color:var(--primary-deep);
-  font-size:36px;
+  margin:12px 0 6px;
+  font-size:28px;
+  line-height:1.08;
 }
-.lead{
-  margin:0 0 18px;
+.sub{
+  margin:0;
   color:var(--muted);
-  line-height:1.7;
+  font-size:13px;
+  line-height:1.55;
 }
-.prompt{
-  background:linear-gradient(135deg,#f8fbfb 0%,#edf7f7 100%);
-  border-left:6px solid var(--primary);
-  border-radius:18px;
-  padding:20px;
-  margin-bottom:16px;
+.question{
+  margin-top:14px;
+  padding:16px;
+  border-radius:24px;
+  background:#faf6ee;
 }
-.prompt h2{
+.zh{
   margin:0;
   font-size:30px;
-  line-height:1.2;
+  line-height:1.12;
+  font-weight:900;
 }
-.prompt p{
-  margin:10px 0 0;
+.pattern{
+  margin:8px 0 0;
   color:var(--muted);
-  font-size:15px;
+  font-size:13px;
+  line-height:1.5;
 }
 .choices{
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px;
+  gap:10px;
+  margin-top:14px;
 }
 .choice{
   width:100%;
+  padding:15px 16px;
   text-align:left;
+  border:1px solid var(--line);
+  border-radius:20px;
   background:#fff;
-  border:2px solid var(--border);
-  border-radius:18px;
-  padding:16px;
-  font-size:18px;
-  font-weight:800;
+  font-size:17px;
+  font-weight:900;
   color:var(--ink);
   cursor:pointer;
-  transition:.15s transform,.15s border-color,.15s background-color;
 }
-.choice:hover{transform:translateY(-1px);border-color:#98c9cb}
-.choice.correct{background:var(--ok);border-color:#52b788;color:#1b5e3c}
-.choice.wrong{background:var(--bad);border-color:#e76f51;color:#9b2226}
-.choice.dim{opacity:.72}
+.choice.correct{
+  background:var(--ok);
+  border-color:#9db7aa;
+  color:#32574b;
+}
+.choice.wrong{
+  background:var(--bad);
+  border-color:#d89a90;
+  color:#8b3e35;
+}
+.choice.dim{opacity:.56}
 .teach{
   display:none;
-  margin-top:16px;
-  background:#f6fbfb;
-  border:1px solid #d7e5e5;
-  border-radius:18px;
-  padding:18px;
+  margin-top:14px;
+  padding:14px;
+  border-radius:22px;
+  background:#fffaf2;
+  border:1px solid #e8dece;
 }
-.teach h3{
+.line{
   margin:0 0 10px;
-  color:var(--primary-deep);
-}
-.exp{
-  background:#fff;
-  border-left:4px solid var(--primary);
-  border-radius:12px;
-  padding:12px 14px;
-  margin-bottom:12px;
-  line-height:1.7;
   font-size:14px;
+  line-height:1.6;
 }
 .answer{
-  margin-bottom:12px;
-  font-weight:800;
-  color:var(--warn);
+  margin:0 0 10px;
   font-size:15px;
+  color:var(--sage-deep);
 }
+details{
+  border:1px solid #eadfce;
+  border-radius:18px;
+  background:#fff;
+  overflow:hidden;
+}
+summary{
+  list-style:none;
+  cursor:pointer;
+  padding:12px 14px;
+  font-size:14px;
+  font-weight:900;
+}
+summary::-webkit-details-marker{display:none}
 .examples{
+  padding:0 14px 14px;
+}
+.examples strong{
+  display:block;
+  margin:8px 0 6px;
+  color:var(--sage-deep);
+}
+.examples p{
+  margin:6px 0;
+  font-size:13px;
+  line-height:1.6;
+}
+.zh-line{color:var(--muted)}
+.actions{
   display:grid;
   gap:10px;
-}
-.group{
-  background:#fff;
-  border:1px solid #e1ecec;
-  border-radius:14px;
-  padding:12px;
-}
-.group strong{
-  color:var(--primary-deep);
-}
-.group p{
-  margin:6px 0;
-  font-size:14px;
-  line-height:1.7;
-}
-.controls{
-  display:flex;
-  gap:10px;
-  justify-content:space-between;
-  margin-top:18px;
+  margin-top:14px;
 }
 .btn{
+  width:100%;
+  padding:14px 16px;
   border:none;
-  border-radius:14px;
-  padding:13px 18px;
+  border-radius:18px;
   font-size:15px;
-  font-weight:800;
+  font-weight:900;
   cursor:pointer;
 }
-.btn-back{
-  background:#fff;
-  color:var(--primary-deep);
-  border:2px solid var(--primary);
-}
 .btn-next{
-  background:var(--primary);
+  background:var(--sage);
   color:#fff;
 }
-.btn-next:disabled{
-  opacity:.45;
-  cursor:not-allowed;
+.btn-next:disabled{opacity:.45}
+.btn-home{
+  background:#fff;
+  color:var(--sage-deep);
+  border:1px solid var(--line);
 }
 .end{
   display:none;
-  text-align:center;
 }
 .score{
-  display:inline-block;
-  margin:18px 0;
-  padding:18px 26px;
-  border-radius:18px;
-  border:3px solid #52b788;
-  background:#f0fbf5;
-  color:#1b5e3c;
-  font-size:34px;
+  margin-top:14px;
+  padding:16px;
+  border-radius:24px;
+  background:#faf6ee;
+  font-size:30px;
   font-weight:900;
+  text-align:center;
 }
 .review{
-  margin-top:18px;
-  text-align:left;
   display:grid;
   gap:10px;
+  margin-top:14px;
 }
 .item{
-  background:#fff7f7;
-  border-left:4px solid #e76f51;
-  border-radius:12px;
-  padding:12px;
+  padding:14px;
+  border-radius:20px;
+  background:#fffaf2;
+  border:1px solid #e8dece;
+  font-size:13px;
+  line-height:1.6;
 }
-.item strong{display:block;margin-bottom:6px}
-@media(max-width:720px){
-  body{padding:14px}
-  .panel{padding:18px}
-  h1{font-size:30px}
-  .prompt h2{font-size:24px}
-  .choices{grid-template-columns:1fr}
-  .controls{flex-direction:column}
-  .btn{width:100%}
-}
+strong{font-weight:900}
 </style>
 <script>
 if("serviceWorker" in navigator){
@@ -237,49 +244,57 @@ if("serviceWorker" in navigator){
 </script>
 </head>
 <body>
-<main class="shell">
-  <section class="panel" id="game">
+<main class="app">
+  <section id="game">
     <div class="topbar">
-      <span class="badge">LEVEL 1</span>
-      <div class="stats">
-        <span class="pill">題目 <span id="currentNo">1</span> / <span id="totalNo">20</span></span>
-        <span class="pill">分數 <span id="scoreNo">0</span></span>
+      <a class="back" href="./index.html">‹</a>
+      <div class="scorebar">
+        <div class="pill"><span id="currentNo">1</span>/<span id="totalNo">20</span></div>
+        <div class="pill">Score <span id="scoreNo">0</span></div>
       </div>
     </div>
-    <h1>選擇題</h1>
-    <p class="lead">俾中文連接詞，你揀最啱嘅英文。答完即時睇解釋同 DSE 例句，再去下一題。</p>
 
-    <section class="prompt">
-      <h2 id="promptZh">載入中...</h2>
-      <p id="promptPattern"></p>
-    </section>
+    <div class="screen">
+      <span class="eyebrow">LEVEL 1</span>
+      <h1><strong>選擇題</strong></h1>
+      <p class="sub">中文 → 揀英文</p>
 
-    <section id="choices" class="choices"></section>
+      <section class="question">
+        <p id="promptZh" class="zh">載入中...</p>
+        <p id="promptPattern" class="pattern"></p>
+      </section>
 
-    <section id="teach" class="teach">
-      <h3>即時講解</h3>
-      <div id="exp" class="exp"></div>
-      <div id="answer" class="answer"></div>
-      <div class="examples">
-        <div id="eg4" class="group"></div>
-        <div id="eg5" class="group"></div>
+      <section id="choices" class="choices"></section>
+
+      <section id="teach" class="teach">
+        <p id="exp" class="line"></p>
+        <p id="answer" class="answer"></p>
+        <details>
+          <summary>例句</summary>
+          <div class="examples">
+            <div id="eg4"></div>
+            <div id="eg5"></div>
+          </div>
+        </details>
+      </section>
+
+      <div class="actions">
+        <button class="btn btn-next" id="nextBtn" type="button" disabled>下一題</button>
+        <button class="btn btn-home" type="button" onclick="location.href='./index.html'">Main Menu</button>
       </div>
-    </section>
-
-    <div class="controls">
-      <button class="btn btn-back" type="button" onclick="location.href='./index.html'">返回 Main Menu</button>
-      <button class="btn btn-next" id="nextBtn" type="button" disabled>下一題</button>
     </div>
   </section>
 
-  <section class="panel end" id="end">
-    <div class="badge">LEVEL 1 COMPLETE</div>
-    <h1>完成了</h1>
-    <div class="score" id="finalScore"></div>
-    <div id="review" class="review"></div>
-    <div class="controls">
-      <button class="btn btn-back" type="button" onclick="location.href='./index.html'">返回 Main Menu</button>
-      <button class="btn btn-next" type="button" onclick="startGame()">重新開始</button>
+  <section id="end" class="end">
+    <div class="screen">
+      <span class="eyebrow">LEVEL 1</span>
+      <h1><strong>完成</strong></h1>
+      <div id="finalScore" class="score"></div>
+      <div id="review" class="review"></div>
+      <div class="actions">
+        <button class="btn btn-next" type="button" onclick="startGame()">再玩一次</button>
+        <button class="btn btn-home" type="button" onclick="location.href='./index.html'">Main Menu</button>
+      </div>
     </div>
   </section>
 </main>
@@ -292,7 +307,6 @@ const fallback={
   l5en:"Advanced example will be added.",
   l5zh:"進階例句稍後補上。"
 };
-
 const TOTAL_QUESTIONS=20;
 let bank=[];
 let questions=[];
@@ -300,7 +314,6 @@ let index=0;
 let score=0;
 let answered=false;
 let reviewLog=[];
-
 const answerGroupsMap={
   1:[["since"],["as"],["because"],["mainly because"],["partly because"],["simply because"]],
   2:[["due to"],["thanks to"],["because of"]],
@@ -327,24 +340,20 @@ const answerGroupsMap={
   59:[["on the one hand"],["on the other hand"]],
   60:[["for one thing"],["for another"]]
 };
-
 const $=id=>document.getElementById(id);
 
 function splitEn(text){
   return (text||"").match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[];
 }
-
 function splitZh(text){
   return (text||"").match(/[^。！？]+[。！？]+|[^。！？]+$/g)||[];
 }
-
 function renderExamples(title,enText,zhText){
   const en=splitEn(enText).map(s=>s.trim()).filter(Boolean);
   const zh=splitZh(zhText).map(s=>s.trim()).filter(Boolean);
   const count=Math.max(en.length,zh.length);
-  return `<strong>${title}</strong>${Array.from({length:count},(_,idx)=>`<p>${en[idx]||""}</p><p>${zh[idx]||""}</p>`).join("")}`;
+  return `<strong>${title}</strong>${Array.from({length:count},(_,idx)=>`<p>${en[idx]||""}</p><p class="zh-line">${zh[idx]||""}</p>`).join("")}`;
 }
-
 function shuffle(arr){
   const copy=[...arr];
   for(let i=copy.length-1;i>0;i--){
@@ -353,23 +362,19 @@ function shuffle(arr){
   }
   return copy;
 }
-
 function getAnswerGroups(item){
   return answerGroupsMap[item.id]||item.answers.map(answer=>[answer]);
 }
-
 function getCorrectOption(item){
   if(item.display) return item.display;
   const groups=getAnswerGroups(item);
   return groups.map(group=>group[0]).join(" / ");
 }
-
 function uniqueOptions(correct,currentId){
   const pool=shuffle(bank.filter(item=>item.id!==currentId).map(getCorrectOption))
     .filter((value,idx,array)=>value!==correct && array.indexOf(value)===idx);
   return shuffle([correct,...pool.slice(0,3)]);
 }
-
 async function loadBank(){
   const response=await fetch("./eng_game_connectives.html",{cache:"no-store"});
   const html=await response.text();
@@ -377,7 +382,6 @@ async function loadBank(){
   if(!match) throw new Error("bank not found");
   return new Function(match[1] + "return bank;")();
 }
-
 function showQuestion(){
   if(index>=questions.length){
     showEnd();
@@ -394,12 +398,11 @@ function showQuestion(){
   $("promptPattern").textContent=item.pattern||"";
   const correct=getCorrectOption(item);
   const options=uniqueOptions(correct,item.id);
-  $("choices").innerHTML=options.map(option=>`<button class="choice" type="button" data-option="${option.replace(/"/g,"&quot;")}">${option}</button>`).join("");
+  $("choices").innerHTML=options.map(option=>`<button class="choice" type="button">${option}</button>`).join("");
   [...$("choices").querySelectorAll(".choice")].forEach(button=>{
     button.addEventListener("click",()=>checkAnswer(button,item,correct));
   });
 }
-
 function checkAnswer(button,item,correct){
   if(answered) return;
   answered=true;
@@ -416,24 +419,20 @@ function checkAnswer(button,item,correct){
   }
   [...$("choices").querySelectorAll(".choice")].forEach(btn=>{
     btn.disabled=true;
-    if(!btn.classList.contains("correct") && !btn.classList.contains("wrong")){
-      btn.classList.add("dim");
-    }
+    if(!btn.classList.contains("correct")&&!btn.classList.contains("wrong")) btn.classList.add("dim");
   });
-  renderTeach(item,correct,isCorrect);
+  renderTeach(item,correct,isCorrect,chosen);
   $("scoreNo").textContent=score;
   $("nextBtn").disabled=false;
 }
-
-function renderTeach(item,correct,isCorrect){
+function renderTeach(item,correct,isCorrect,chosen){
   const data={...fallback,...item};
   $("exp").textContent=data.exp||data.note||"";
-  $("answer").textContent=isCorrect?`正確答案：${correct}`:`你揀咗：${reviewLog.at(-1)?.chosen||""}；正確答案：${correct}`;
+  $("answer").textContent=isCorrect?`正確：${correct}`:`你的答案：${chosen}  正確：${correct}`;
   $("eg4").innerHTML=renderExamples("Level 4",data.l4en,data.l4zh);
   $("eg5").innerHTML=renderExamples("Level 5",data.l5en,data.l5zh);
   $("teach").style.display="block";
 }
-
 function showEnd(){
   $("game").style.display="none";
   $("end").style.display="block";
@@ -441,10 +440,9 @@ function showEnd(){
   const percentage=total?Math.round(score/total*100):0;
   $("finalScore").textContent=`${score} / ${total} (${percentage}%)`;
   $("review").innerHTML=reviewLog.length
-    ? reviewLog.map(item=>`<div class="item"><strong>${item.zh}</strong><div>你揀咗：${item.chosen}</div><div>正確答案：${item.correct}</div></div>`).join("")
-    : `<div class="item" style="background:#f0fbf5;border-left-color:#52b788">今次全對，做得好。</div>`;
+    ? reviewLog.map(item=>`<div class="item"><strong>${item.zh}</strong><div>你的答案：${item.chosen}</div><div>正確：${item.correct}</div></div>`).join("")
+    : `<div class="item">今次全對。</div>`;
 }
-
 function startGame(){
   $("game").style.display="block";
   $("end").style.display="none";
@@ -454,20 +452,18 @@ function startGame(){
   reviewLog=[];
   showQuestion();
 }
-
 $("nextBtn").addEventListener("click",()=>{
   index++;
   showQuestion();
 });
-
 loadBank()
   .then(items=>{
     bank=items;
     startGame();
   })
   .catch(()=>{
-    $("promptZh").textContent="載入題庫失敗";
-    $("promptPattern").textContent="請 refresh 再試。";
+    $("promptZh").textContent="載入失敗";
+    $("promptPattern").textContent="請 refresh 再試";
     $("choices").innerHTML="";
   });
 </script>
