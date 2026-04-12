@@ -224,18 +224,14 @@ body{
   position:fixed;
   top:50%;
   transform:translateY(-50%);
-  width:48px;
-  height:48px;
+  width:72px;
+  height:72px;
   border:none;
-  border-radius:50%;
   background:transparent;
-  color:#8fd8e8;
-  font-size:42px;
-  font-weight:900;
   cursor:pointer;
   animation:floaty 1.6s ease-in-out infinite;
   z-index:18;
-  text-shadow:0 2px 0 #ffffff,0 0 10px rgba(143,216,232,.35);
+  padding:0;
 }
 .nav-btn.left{left:10px}
 .nav-btn.right{right:10px;animation-delay:.2s}
@@ -243,6 +239,20 @@ body{
   transform:translateY(calc(-50% + 4px));
 }
 .nav-btn[hidden]{visibility:hidden}
+.nav-btn svg{
+  display:block;
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+.nav-btn path{
+  stroke:#8fd8e8;
+  stroke-width:10;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  fill:none;
+  filter:drop-shadow(0 2px 0 #ffffff) drop-shadow(0 0 8px rgba(143,216,232,.25));
+}
 @keyframes floaty{
   0%,100%{transform:translateY(-50%)}
   50%{transform:translateY(calc(-50% - 3px))}
@@ -270,19 +280,26 @@ body{
   position:fixed;
   right:16px;
   bottom:16px;
-  width:60px;
-  height:60px;
+  width:48px;
+  height:48px;
   border:4px dashed var(--primary);
   border-radius:50%;
-  background:rgba(255,255,255,.18);
+  background:transparent;
   color:var(--primary-dark);
-  font-size:24px;
+  font-size:18px;
   font-weight:900;
   cursor:pointer;
   box-shadow:0 4px 12px rgba(78,205,196,.16);
-  backdrop-filter:blur(3px);
   z-index:20;
   animation:floaty 1.6s ease-in-out infinite;
+  transition:transform .18s ease,width .18s ease,height .18s ease,right .18s ease,bottom .18s ease,font-size .18s ease;
+}
+.fab.open{
+  width:60px;
+  height:60px;
+  right:10px;
+  bottom:10px;
+  font-size:24px;
 }
 .fab:active{
   transform:translateY(4px);
@@ -415,9 +432,17 @@ if("serviceWorker" in navigator){
   <section id="card" class="card"></section>
 
   <section class="nav">
-    <button id="prevBtn" class="nav-btn left" type="button" aria-label="上一張">‹</button>
+    <button id="prevBtn" class="nav-btn left" type="button" aria-label="上一張">
+      <svg viewBox="0 0 80 80" aria-hidden="true">
+        <path d="M50 16 L26 40 L50 64"></path>
+      </svg>
+    </button>
     <div id="dots" class="dots"></div>
-    <button id="nextBtn" class="nav-btn right" type="button" aria-label="下一張">›</button>
+    <button id="nextBtn" class="nav-btn right" type="button" aria-label="下一張">
+      <svg viewBox="0 0 80 80" aria-hidden="true">
+        <path d="M30 16 L54 40 L30 64"></path>
+      </svg>
+    </button>
   </section>
 </main>
 <div id="overlay" class="overlay"></div>
@@ -563,12 +588,14 @@ function openDrawer(){
   $("overlay").classList.add("open");
   $("drawer").setAttribute("aria-hidden","false");
   $("drawerToggle").textContent="▾";
+  $("drawerToggle").classList.add("open");
 }
 function closeDrawer(){
   $("drawer").classList.remove("open");
   $("overlay").classList.remove("open");
   $("drawer").setAttribute("aria-hidden","true");
   $("drawerToggle").textContent="▸";
+  $("drawerToggle").classList.remove("open");
 }
 function toggleDrawer(){
   if($("drawer").classList.contains("open")) closeDrawer();
