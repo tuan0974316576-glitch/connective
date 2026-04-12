@@ -24,7 +24,7 @@
   --soft-pink:#fff5f5;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%}
+html,body{margin:0;height:100%;overflow:hidden}
 body{
   font-family:"M PLUS Rounded 1c","Zen Maru Gothic","Hiragino Kaku Gothic ProN",sans-serif;
   background:var(--base-bg);
@@ -34,6 +34,9 @@ body{
 .app{
   width:min(560px,100%);
   margin:0 auto;
+  height:calc(100vh - 28px);
+  display:flex;
+  flex-direction:column;
 }
 .topbar{
   display:flex;
@@ -80,6 +83,11 @@ body{
   padding:18px;
   transform-style:preserve-3d;
   backface-visibility:hidden;
+  flex:1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
 }
 .card.is-entering-right{
   animation:flipInRight .42s ease;
@@ -125,23 +133,23 @@ body{
   font-weight:900;
 }
 .zh{
-  margin:14px 0 8px;
-  font-size:30px;
+  margin:12px 0 6px;
+  font-size:25px;
   line-height:1.12;
   font-weight:900;
   color:var(--primary-dark);
 }
 .pattern{
   color:var(--muted);
-  font-size:13px;
-  line-height:1.55;
+  font-size:12px;
+  line-height:1.45;
 }
 .answer{
-  margin-top:14px;
+  margin-top:12px;
   background:#fffdf5;
   border:2px dashed var(--secondary);
   border-radius:22px;
-  padding:14px;
+  padding:12px;
 }
 .answer-label,.note-label,.eg-label{
   display:inline-block;
@@ -164,52 +172,58 @@ body{
   color:#d15f5f;
 }
 .answer-text{
-  font-size:19px;
-  line-height:1.5;
+  font-size:17px;
+  line-height:1.42;
   font-weight:900;
   color:var(--primary-dark);
 }
 .note{
-  margin-top:12px;
+  margin-top:10px;
   background:#fff;
   border:2px dashed var(--line);
   border-radius:22px;
-  padding:14px;
-  font-size:13px;
-  line-height:1.65;
+  padding:12px;
+  font-size:12px;
+  line-height:1.55;
 }
 .examples{
-  margin-top:12px;
+  margin-top:10px;
   background:#fff;
   border:2px dashed var(--line);
   border-radius:22px;
-  padding:14px;
+  padding:12px;
+  flex:1;
+  min-height:0;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
 }
 .group + .group{
-  margin-top:12px;
-  padding-top:12px;
+  margin-top:10px;
+  padding-top:10px;
   border-top:2px dashed #edf1f2;
 }
 .group-title{
   margin:0 0 8px;
-  font-size:14px;
+  font-size:13px;
   font-weight:900;
   color:var(--primary-dark);
 }
 .en,.zh-line{
-  margin:6px 0;
-  font-size:13px;
-  line-height:1.6;
+  margin:5px 0;
+  font-size:12px;
+  line-height:1.52;
 }
 .zh-line{color:var(--muted)}
 .nav{
-  display:grid;
-  grid-template-columns:56px 1fr 56px;
-  gap:12px;
+  display:flex;
+  justify-content:center;
   align-items:center;
-  margin-top:16px;
+  margin-top:10px;
 }
 .nav-btn{
+  position:fixed;
+  top:50%;
+  transform:translateY(-50%);
   width:56px;
   height:56px;
   border:none;
@@ -221,16 +235,18 @@ body{
   cursor:pointer;
   box-shadow:0 4px 0 var(--secondary-dark),0 8px 10px rgba(255,193,7,.3);
   animation:floaty 1.6s ease-in-out infinite;
+  z-index:18;
 }
-.nav-btn.right{animation-delay:.2s}
+.nav-btn.left{left:10px}
+.nav-btn.right{right:10px;animation-delay:.2s}
 .nav-btn:active{
-  transform:translateY(4px);
+  transform:translateY(calc(-50% + 4px));
   box-shadow:0 0 0 var(--secondary-dark);
 }
 .nav-btn[hidden]{visibility:hidden}
 @keyframes floaty{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-3px)}
+  0%,100%{transform:translateY(-50%)}
+  50%{transform:translateY(calc(-50% - 3px))}
 }
 .dots{
   display:flex;
@@ -367,6 +383,9 @@ body{
 }
 @media(min-width:700px){
   body{padding:24px}
+  .app{height:calc(100vh - 48px)}
+  .nav-btn.left{left:24px}
+  .nav-btn.right{right:24px}
   .fab{
     right:24px;
     bottom:24px;
