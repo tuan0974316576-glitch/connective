@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a9396">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon-512-maskable.png" type="image/png">
+<link rel="apple-touch-icon" href="./icon-512-maskable.png">
+<title>DSE 連接詞 Level 1</title>
+<style>
+:root{
+  --bg:#f2f5f6;
+  --card:#ffffff;
+  --border:#cfd8dc;
+  --primary:#0a9396;
+  --primary-deep:#005f73;
+  --ok:#d8f3dc;
+  --bad:#fde2e4;
+  --warn:#f4a261;
+  --ink:#183640;
+  --muted:#61727a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:"Segoe UI","Noto Sans TC",sans-serif;
+  background:
+    radial-gradient(circle at top left,rgba(10,147,150,.10),transparent 24%),
+    radial-gradient(circle at top right,rgba(244,162,97,.12),transparent 24%),
+    linear-gradient(180deg,#f7fbfb 0%,#edf3f4 100%);
+  color:var(--ink);
+  padding:20px;
+}
+.shell{width:min(980px,100%);margin:0 auto}
+.panel{
+  background:var(--card);
+  border:2px solid var(--border);
+  border-radius:24px;
+  padding:22px;
+  box-shadow:0 16px 36px rgba(0,0,0,.07);
+}
+.topbar{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+.badge{
+  display:inline-block;
+  background:#dff3f3;
+  color:var(--primary-deep);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.04em;
+  border-radius:999px;
+  padding:8px 14px;
+}
+.stats{
+  margin-left:auto;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.pill{
+  background:#f4f8f8;
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:13px;
+  font-weight:700;
+}
+h1{
+  margin:0 0 8px;
+  color:var(--primary-deep);
+  font-size:36px;
+}
+.lead{
+  margin:0 0 18px;
+  color:var(--muted);
+  line-height:1.7;
+}
+.prompt{
+  background:linear-gradient(135deg,#f8fbfb 0%,#edf7f7 100%);
+  border-left:6px solid var(--primary);
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:16px;
+}
+.prompt h2{
+  margin:0;
+  font-size:30px;
+  line-height:1.2;
+}
+.prompt p{
+  margin:10px 0 0;
+  color:var(--muted);
+  font-size:15px;
+}
+.choices{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.choice{
+  width:100%;
+  text-align:left;
+  background:#fff;
+  border:2px solid var(--border);
+  border-radius:18px;
+  padding:16px;
+  font-size:18px;
+  font-weight:800;
+  color:var(--ink);
+  cursor:pointer;
+  transition:.15s transform,.15s border-color,.15s background-color;
+}
+.choice:hover{transform:translateY(-1px);border-color:#98c9cb}
+.choice.correct{background:var(--ok);border-color:#52b788;color:#1b5e3c}
+.choice.wrong{background:var(--bad);border-color:#e76f51;color:#9b2226}
+.choice.dim{opacity:.72}
+.teach{
+  display:none;
+  margin-top:16px;
+  background:#f6fbfb;
+  border:1px solid #d7e5e5;
+  border-radius:18px;
+  padding:18px;
+}
+.teach h3{
+  margin:0 0 10px;
+  color:var(--primary-deep);
+}
+.exp{
+  background:#fff;
+  border-left:4px solid var(--primary);
+  border-radius:12px;
+  padding:12px 14px;
+  margin-bottom:12px;
+  line-height:1.7;
+  font-size:14px;
+}
+.answer{
+  margin-bottom:12px;
+  font-weight:800;
+  color:var(--warn);
+  font-size:15px;
+}
+.examples{
+  display:grid;
+  gap:10px;
+}
+.group{
+  background:#fff;
+  border:1px solid #e1ecec;
+  border-radius:14px;
+  padding:12px;
+}
+.group strong{
+  color:var(--primary-deep);
+}
+.group p{
+  margin:6px 0;
+  font-size:14px;
+  line-height:1.7;
+}
+.controls{
+  display:flex;
+  gap:10px;
+  justify-content:space-between;
+  margin-top:18px;
+}
+.btn{
+  border:none;
+  border-radius:14px;
+  padding:13px 18px;
+  font-size:15px;
+  font-weight:800;
+  cursor:pointer;
+}
+.btn-back{
+  background:#fff;
+  color:var(--primary-deep);
+  border:2px solid var(--primary);
+}
+.btn-next{
+  background:var(--primary);
+  color:#fff;
+}
+.btn-next:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+.end{
+  display:none;
+  text-align:center;
+}
+.score{
+  display:inline-block;
+  margin:18px 0;
+  padding:18px 26px;
+  border-radius:18px;
+  border:3px solid #52b788;
+  background:#f0fbf5;
+  color:#1b5e3c;
+  font-size:34px;
+  font-weight:900;
+}
+.review{
+  margin-top:18px;
+  text-align:left;
+  display:grid;
+  gap:10px;
+}
+.item{
+  background:#fff7f7;
+  border-left:4px solid #e76f51;
+  border-radius:12px;
+  padding:12px;
+}
+.item strong{display:block;margin-bottom:6px}
+@media(max-width:720px){
+  body{padding:14px}
+  .panel{padding:18px}
+  h1{font-size:30px}
+  .prompt h2{font-size:24px}
+  .choices{grid-template-columns:1fr}
+  .controls{flex-direction:column}
+  .btn{width:100%}
+}
+</style>
+<script>
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>{navigator.serviceWorker.register("./service-worker.js").catch(()=>{})});
+}
+</script>
+</head>
+<body>
+<main class="shell">
+  <section class="panel" id="game">
+    <div class="topbar">
+      <span class="badge">LEVEL 1</span>
+      <div class="stats">
+        <span class="pill">題目 <span id="currentNo">1</span> / <span id="totalNo">20</span></span>
+        <span class="pill">分數 <span id="scoreNo">0</span></span>
+      </div>
+    </div>
+    <h1>選擇題</h1>
+    <p class="lead">俾中文連接詞，你揀最啱嘅英文。答完即時睇解釋同 DSE 例句，再去下一題。</p>
+
+    <section class="prompt">
+      <h2 id="promptZh">載入中...</h2>
+      <p id="promptPattern"></p>
+    </section>
+
+    <section id="choices" class="choices"></section>
+
+    <section id="teach" class="teach">
+      <h3>即時講解</h3>
+      <div id="exp" class="exp"></div>
+      <div id="answer" class="answer"></div>
+      <div class="examples">
+        <div id="eg4" class="group"></div>
+        <div id="eg5" class="group"></div>
+      </div>
+    </section>
+
+    <div class="controls">
+      <button class="btn btn-back" type="button" onclick="location.href='./index.html'">返回 Main Menu</button>
+      <button class="btn btn-next" id="nextBtn" type="button" disabled>下一題</button>
+    </div>
+  </section>
+
+  <section class="panel end" id="end">
+    <div class="badge">LEVEL 1 COMPLETE</div>
+    <h1>完成了</h1>
+    <div class="score" id="finalScore"></div>
+    <div id="review" class="review"></div>
+    <div class="controls">
+      <button class="btn btn-back" type="button" onclick="location.href='./index.html'">返回 Main Menu</button>
+      <button class="btn btn-next" type="button" onclick="startGame()">重新開始</button>
+    </div>
+  </section>
+</main>
+
+<script>
+const fallback={
+  exp:"此連接詞已加入題庫，之後可再補更完整教學內容。",
+  l4en:"Example will be added.",
+  l4zh:"例句稍後補上。",
+  l5en:"Advanced example will be added.",
+  l5zh:"進階例句稍後補上。"
+};
+
+const TOTAL_QUESTIONS=20;
+let bank=[];
+let questions=[];
+let index=0;
+let score=0;
+let answered=false;
+let reviewLog=[];
+
+const answerGroupsMap={
+  1:[["since"],["as"],["because"],["mainly because"],["partly because"],["simply because"]],
+  2:[["due to"],["thanks to"],["because of"]],
+  3:[["and therefore"],["thus"],["hence"],["as a result"],["therefore"]],
+  6:[["while"],["despite the fact that"]],
+  11:[["on top of that"],["moreover"],["besides"],["what's more","whats more"],["plus"],["furthermore"],["in addition"]],
+  12:[["and yet"],["nevertheless"],["nonetheless"],["however"]],
+  13:[["be that as it may"],["that said"],["having said that"],["with that said"]],
+  18:[["to put it simply"],["simply put"]],
+  19:[["it goes without saying that"],["needless to say"]],
+  22:[["also"],["as well"]],
+  26:[["as mentioned"],["as mentioned above"]],
+  29:[["from this line of thinking"],["in this sense"],["with this in mind"]],
+  30:[["to begin with"],["first of all"]],
+  33:[["as everyone knows"],["it is widely acknowledged that"]],
+  35:[["given"],["in view of"],["in light of"]],
+  38:[["apart from"],["aside from"],["other than"],["beyond"]],
+  39:[["in general"],["generally speaking"]],
+  41:[["it is suggested that"],["it is advisable that"]],
+  43:[["such as"],["for example"],["ranging from"],["from"]],
+  55:[["to"],["in order to"],["so as to"]],
+  56:[["it turns out that"],["it turned out that"]],
+  57:[["instead of"],["rather than"]],
+  59:[["on the one hand"],["on the other hand"]],
+  60:[["for one thing"],["for another"]]
+};
+
+const $=id=>document.getElementById(id);
+
+function splitEn(text){
+  return (text||"").match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[];
+}
+
+function splitZh(text){
+  return (text||"").match(/[^。！？]+[。！？]+|[^。！？]+$/g)||[];
+}
+
+function renderExamples(title,enText,zhText){
+  const en=splitEn(enText).map(s=>s.trim()).filter(Boolean);
+  const zh=splitZh(zhText).map(s=>s.trim()).filter(Boolean);
+  const count=Math.max(en.length,zh.length);
+  return `<strong>${title}</strong>${Array.from({length:count},(_,idx)=>`<p>${en[idx]||""}</p><p>${zh[idx]||""}</p>`).join("")}`;
+}
+
+function shuffle(arr){
+  const copy=[...arr];
+  for(let i=copy.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [copy[i],copy[j]]=[copy[j],copy[i]];
+  }
+  return copy;
+}
+
+function getAnswerGroups(item){
+  return answerGroupsMap[item.id]||item.answers.map(answer=>[answer]);
+}
+
+function getCorrectOption(item){
+  if(item.display) return item.display;
+  const groups=getAnswerGroups(item);
+  return groups.map(group=>group[0]).join(" / ");
+}
+
+function uniqueOptions(correct,currentId){
+  const pool=shuffle(bank.filter(item=>item.id!==currentId).map(getCorrectOption))
+    .filter((value,idx,array)=>value!==correct && array.indexOf(value)===idx);
+  return shuffle([correct,...pool.slice(0,3)]);
+}
+
+async function loadBank(){
+  const response=await fetch("./eng_game_connectives.html",{cache:"no-store"});
+  const html=await response.text();
+  const match=html.match(/(const bank=\[[\s\S]*?\];)\s*const fallback=/);
+  if(!match) throw new Error("bank not found");
+  return new Function(match[1] + "return bank;")();
+}
+
+function showQuestion(){
+  if(index>=questions.length){
+    showEnd();
+    return;
+  }
+  answered=false;
+  $("nextBtn").disabled=true;
+  $("teach").style.display="none";
+  const item=questions[index];
+  $("currentNo").textContent=index+1;
+  $("totalNo").textContent=questions.length;
+  $("scoreNo").textContent=score;
+  $("promptZh").textContent=item.zh;
+  $("promptPattern").textContent=item.pattern||"";
+  const correct=getCorrectOption(item);
+  const options=uniqueOptions(correct,item.id);
+  $("choices").innerHTML=options.map(option=>`<button class="choice" type="button" data-option="${option.replace(/"/g,"&quot;")}">${option}</button>`).join("");
+  [...$("choices").querySelectorAll(".choice")].forEach(button=>{
+    button.addEventListener("click",()=>checkAnswer(button,item,correct));
+  });
+}
+
+function checkAnswer(button,item,correct){
+  if(answered) return;
+  answered=true;
+  const chosen=button.textContent.trim();
+  const correctButtons=[...$("choices").querySelectorAll(".choice")].filter(btn=>btn.textContent.trim()===correct);
+  const isCorrect=chosen===correct;
+  if(isCorrect){
+    score++;
+    button.classList.add("correct");
+  }else{
+    button.classList.add("wrong");
+    correctButtons.forEach(btn=>btn.classList.add("correct"));
+    reviewLog.push({zh:item.zh,chosen,correct});
+  }
+  [...$("choices").querySelectorAll(".choice")].forEach(btn=>{
+    btn.disabled=true;
+    if(!btn.classList.contains("correct") && !btn.classList.contains("wrong")){
+      btn.classList.add("dim");
+    }
+  });
+  renderTeach(item,correct,isCorrect);
+  $("scoreNo").textContent=score;
+  $("nextBtn").disabled=false;
+}
+
+function renderTeach(item,correct,isCorrect){
+  const data={...fallback,...item};
+  $("exp").textContent=data.exp||data.note||"";
+  $("answer").textContent=isCorrect?`正確答案：${correct}`:`你揀咗：${reviewLog.at(-1)?.chosen||""}；正確答案：${correct}`;
+  $("eg4").innerHTML=renderExamples("Level 4",data.l4en,data.l4zh);
+  $("eg5").innerHTML=renderExamples("Level 5",data.l5en,data.l5zh);
+  $("teach").style.display="block";
+}
+
+function showEnd(){
+  $("game").style.display="none";
+  $("end").style.display="block";
+  const total=questions.length;
+  const percentage=total?Math.round(score/total*100):0;
+  $("finalScore").textContent=`${score} / ${total} (${percentage}%)`;
+  $("review").innerHTML=reviewLog.length
+    ? reviewLog.map(item=>`<div class="item"><strong>${item.zh}</strong><div>你揀咗：${item.chosen}</div><div>正確答案：${item.correct}</div></div>`).join("")
+    : `<div class="item" style="background:#f0fbf5;border-left-color:#52b788">今次全對，做得好。</div>`;
+}
+
+function startGame(){
+  $("game").style.display="block";
+  $("end").style.display="none";
+  questions=shuffle(bank).slice(0,Math.min(TOTAL_QUESTIONS,bank.length));
+  index=0;
+  score=0;
+  reviewLog=[];
+  showQuestion();
+}
+
+$("nextBtn").addEventListener("click",()=>{
+  index++;
+  showQuestion();
+});
+
+loadBank()
+  .then(items=>{
+    bank=items;
+    startGame();
+  })
+  .catch(()=>{
+    $("promptZh").textContent="載入題庫失敗";
+    $("promptPattern").textContent="請 refresh 再試。";
+    $("choices").innerHTML="";
+  });
+</script>
+</body>
+</html>
