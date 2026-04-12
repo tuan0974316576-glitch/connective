@@ -7,16 +7,64 @@
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon-512-maskable.png" type="image/png">
 <link rel="apple-touch-icon" href="./icon-512-maskable.png">
-<title>Redirecting...</title>
-<meta http-equiv="refresh" content="0; url=./eng_game_connectives.html">
+<title>DSE 連接詞挑戰</title>
+<style>
+:root{--bg:#f1f3f3;--p:#0a9396;--pd:#005f73;--s:#2d6a4f;--bd:#ced4da;--card:#ffffff;--muted:#5f6c72;--soft:#e6f1f0;--warm:#f4a261}*{box-sizing:border-box}html,body{margin:0;min-height:100%}body{font-family:"Segoe UI","Noto Sans TC",sans-serif;background:radial-gradient(circle at top,#f8fbfb 0,#edf4f4 45%,#dde9e8 100%);color:#16323f;display:flex;justify-content:center;padding:24px}.shell{width:min(960px,100%)}.hero{background:linear-gradient(135deg,#ffffff 0,#eef7f6 100%);border:2px solid var(--bd);border-radius:20px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,.08);margin-bottom:18px}.badge{display:inline-block;background:#dff3f3;color:var(--pd);font-weight:800;border-radius:999px;padding:8px 14px;font-size:13px;letter-spacing:.04em}.hero h1{margin:14px 0 10px;font-size:42px;line-height:1.05;color:var(--pd)}.hero p{margin:0;color:var(--muted);font-size:16px;line-height:1.7;max-width:680px}.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}.menu-card{background:var(--card);border:2px solid var(--bd);border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:12px}.menu-card h2{margin:0;color:var(--pd);font-size:22px}.menu-card p{margin:0;color:var(--muted);line-height:1.6;font-size:14px;min-height:66px}.meta{font-size:12px;font-weight:800;color:#cf5c36;letter-spacing:.04em}.actions{margin-top:auto}.btn{display:inline-flex;justify-content:center;align-items:center;width:100%;padding:13px 16px;border-radius:12px;font-weight:800;text-decoration:none;border:2px solid transparent;transition:.15s transform,.15s background-color,.15s color}.btn:hover{transform:translateY(-1px)}.btn-primary{background:var(--p);color:#fff}.btn-primary:hover{background:var(--pd)}.btn-secondary{background:#fff;color:var(--p);border-color:var(--p)}.btn-secondary:hover{background:#ecfbfb}.btn-disabled{background:#eef1f2;color:#95a3aa;border-color:#d6dde0;cursor:not-allowed}.footer-note{margin-top:18px;background:var(--soft);border-radius:14px;padding:16px 18px;color:#33505c;font-size:14px;line-height:1.7}.footer-note strong{color:var(--pd)}@media(max-width:700px){body{padding:14px}.hero{padding:22px}.hero h1{font-size:32px}.menu-grid{grid-template-columns:1fr}}
+</style>
 <script>
 if("serviceWorker" in navigator){
 window.addEventListener("load",()=>{navigator.serviceWorker.register("./service-worker.js").catch(()=>{})});
 }
-window.location.replace("./eng_game_connectives.html");
 </script>
 </head>
 <body>
-<p><a href="./eng_game_connectives.html">Open the game</a></p>
+<main class="shell">
+  <section class="hero">
+    <div class="badge">MAIN MENU</div>
+    <h1>DSE 連接詞挑戰</h1>
+    <p>揀你想用嘅模式開始。今步先做好主選單框架，方便之後逐個 mode 擴充。現階段 <strong>Level 2</strong> 已可玩，其餘入口先預留位置。</p>
+  </section>
+
+  <section class="menu-grid">
+    <article class="menu-card">
+      <div class="meta">REVISION</div>
+      <h2>溫習表</h2>
+      <p>顯示晒所有連接詞、意思、用法同例句，俾學生先溫後操。</p>
+      <div class="actions"><span class="btn btn-disabled">Coming Soon</span></div>
+    </article>
+
+    <article class="menu-card">
+      <div class="meta">LEVEL 1</div>
+      <h2>選擇題</h2>
+      <p>俾中文連接詞，學生從選項中揀返正確英文。</p>
+      <div class="actions"><span class="btn btn-disabled">Coming Soon</span></div>
+    </article>
+
+    <article class="menu-card">
+      <div class="meta">LEVEL 2</div>
+      <h2>直接輸入</h2>
+      <p>俾中文連接詞，學生直接打英文答案。現有完整玩法會由呢度進入。</p>
+      <div class="actions"><a class="btn btn-primary" href="./eng_game_connectives.html">開始 Level 2</a></div>
+    </article>
+
+    <article class="menu-card">
+      <div class="meta">LEVEL 3</div>
+      <h2>句子選擇題</h2>
+      <p>俾英文句子，再揀最合適嘅連接詞，訓練語境判斷。</p>
+      <div class="actions"><span class="btn btn-disabled">Coming Soon</span></div>
+    </article>
+
+    <article class="menu-card">
+      <div class="meta">LEVEL 4</div>
+      <h2>句子填空</h2>
+      <p>俾英文句子同橫線，學生自己打返缺少嘅連接詞。</p>
+      <div class="actions"><span class="btn btn-disabled">Coming Soon</span></div>
+    </article>
+  </section>
+
+  <section class="footer-note">
+    <strong>下一步建議：</strong>先做統一題庫結構，再接上溫習表、Level 1、Level 3、Level 4。咁之後每個 mode 都可以共用同一批內容。
+  </section>
+</main>
 </body>
 </html>

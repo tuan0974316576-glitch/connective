@@ -1,8 +1,8 @@
 {
   "name": "DSE 連接詞挑戰",
   "short_name": "連接詞挑戰",
-  "description": "幫學生操練 DSE 連接詞的可安裝練習遊戲。",
-  "start_url": "./eng_game_connectives.html",
+  "description": "幫學生溫習和操練 DSE 連接詞的可安裝學習遊戲。",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
