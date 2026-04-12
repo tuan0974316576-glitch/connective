@@ -9,26 +9,27 @@
 <link rel="apple-touch-icon" href="./icon-512-maskable.png">
 <title>DSE Connective App</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&family=Zen+Maru+Gothic:wght@500;700&display=swap');
 :root{
-  --bg:#f7f3eb;
-  --panel:#fffdf8;
-  --ink:#24313a;
-  --muted:#6d7b80;
-  --line:#ddd4c5;
-  --sage:#7f9c96;
-  --sage-deep:#5e7772;
-  --pink:#e7d6d0;
-  --cream:#f4ecde;
-  --white:#ffffff;
+  --base-bg:#fdfbf7;
+  --primary:#4ecdc4;
+  --primary-dark:#2cb5ac;
+  --secondary:#ffe66d;
+  --secondary-dark:#ffb703;
+  --text:#444444;
+  --muted:#777;
+  --line:#d1d8e0;
+  --panel:#ffffff;
+  --soft-blue:#e0fbfc;
+  --soft-pink:#fff5f5;
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%}
 body{
-  font-family:"Segoe UI","Noto Sans TC",sans-serif;
-  background:
-    radial-gradient(circle at top left,rgba(231,214,208,.55),transparent 34%),
-    linear-gradient(180deg,#fbf8f2 0%,#f3eee4 100%);
-  color:var(--ink);
+  -webkit-tap-highlight-color:transparent;
+  font-family:"M PLUS Rounded 1c","Zen Maru Gothic","Hiragino Kaku Gothic ProN",sans-serif;
+  background:var(--base-bg);
+  color:var(--text);
   padding:14px;
 }
 .app{
@@ -37,17 +38,17 @@ body{
 }
 .hero{
   background:var(--panel);
-  border:1px solid var(--line);
+  border:3px dashed var(--primary);
   border-radius:28px;
   padding:20px;
-  box-shadow:0 14px 30px rgba(60,66,70,.08);
+  box-shadow:0 0 0 6px #fff,0 10px 20px rgba(78,205,196,.15);
 }
 .eyebrow{
   display:inline-block;
   padding:7px 12px;
   border-radius:999px;
-  background:var(--cream);
-  color:var(--sage-deep);
+  background:#fffdf5;
+  color:var(--primary-dark);
   font-size:11px;
   font-weight:900;
   letter-spacing:.08em;
@@ -57,10 +58,11 @@ h1{
   font-size:34px;
   line-height:1.02;
   font-weight:900;
+  color:var(--primary-dark);
 }
 .sub{
   margin:0;
-  color:var(--muted);
+  color:#666;
   font-size:14px;
   line-height:1.6;
 }
@@ -73,11 +75,11 @@ h1{
   display:block;
   text-decoration:none;
   color:inherit;
-  background:var(--panel);
-  border:1px solid var(--line);
+  background:#fff;
+  border:2px dashed var(--line);
   border-radius:24px;
   padding:16px;
-  box-shadow:0 10px 24px rgba(60,66,70,.06);
+  box-shadow:0 4px 0 #f0f0f0;
 }
 .card-top{
   display:flex;
@@ -90,31 +92,37 @@ h1{
   min-width:64px;
   padding:6px 10px;
   border-radius:999px;
-  background:var(--sage);
+  background:var(--primary);
   color:#fff;
   font-size:11px;
   font-weight:900;
   text-align:center;
 }
 .tag.soft{
-  background:var(--pink);
-  color:#6f5650;
+  background:#f8f9fa;
+  color:#888;
 }
 .title{
   margin:10px 0 0;
   font-size:22px;
   font-weight:900;
+  color:var(--primary-dark);
 }
 .desc{
   margin:8px 0 0;
-  color:var(--muted);
+  color:#666;
   font-size:13px;
   line-height:1.55;
 }
 .arrow{
   font-size:20px;
-  color:var(--sage-deep);
+  color:var(--primary-dark);
   font-weight:900;
+}
+.card:hover{
+  background:var(--soft-blue);
+  border-color:var(--primary);
+  transform:translateY(-2px);
 }
 .card.disabled{
   opacity:.58;
@@ -123,9 +131,9 @@ h1{
   margin-top:12px;
   padding:14px 16px;
   border-radius:20px;
-  background:rgba(255,253,248,.78);
-  border:1px solid var(--line);
-  color:var(--muted);
+  background:#fff8e1;
+  border:3px dashed var(--secondary);
+  color:#6b5a28;
   font-size:12px;
   line-height:1.6;
 }
