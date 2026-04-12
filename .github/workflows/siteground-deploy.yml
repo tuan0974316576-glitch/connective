@@ -1,0 +1,40 @@
+name: Deploy to SiteGround
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup SSH key
+        shell: bash
+        run: |
+          mkdir -p ~/.ssh
+          printf "%s" "${{ secrets.SG_SSH_PRIVATE_KEY }}" > ~/.ssh/siteground_key
+          chmod 600 ~/.ssh/siteground_key
+          ssh-keyscan -p "${{ secrets.SG_PORT }}" "${{ secrets.SG_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Ensure remote directory exists
+        shell: bash
+        run: |
+          ssh -i ~/.ssh/siteground_key -p "${{ secrets.SG_PORT }}" "${{ secrets.SG_USER }}@${{ secrets.SG_HOST }}" "mkdir -p '${{ secrets.SG_REMOTE_PATH }}'"
+
+      - name: Upload site files
+        shell: bash
+        run: |
+          rsync -avz --delete \
+            --exclude ".git/" \
+            --exclude ".github/" \
+            --exclude ".tmp.driveupload/" \
+            --exclude "desktop.ini" \
+            --exclude "*.ps1" \
+            -e "ssh -i ~/.ssh/siteground_key -p ${{ secrets.SG_PORT }}" \
+            ./ "${{ secrets.SG_USER }}@${{ secrets.SG_HOST }}:${{ secrets.SG_REMOTE_PATH }}/"
