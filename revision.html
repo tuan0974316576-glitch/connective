@@ -42,7 +42,7 @@ body{
   gap:10px;
   margin-bottom:12px;
 }
-.back{
+.back,.close-btn{
   display:inline-flex;
   justify-content:center;
   align-items:center;
@@ -56,6 +56,11 @@ body{
   font-size:22px;
   font-weight:900;
   box-shadow:0 4px 0 #f0f0f0;
+}
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 .count{
   padding:8px 14px;
@@ -73,11 +78,40 @@ body{
   border-radius:30px;
   box-shadow:0 0 0 6px #fff,0 10px 20px rgba(78,205,196,.15);
   padding:18px;
-  animation:cardIn .28s ease;
+  transform-style:preserve-3d;
+  backface-visibility:hidden;
+}
+.card.is-entering-right{
+  animation:flipInRight .42s ease;
+}
+.card.is-entering-left{
+  animation:flipInLeft .42s ease;
+}
+.card.is-leaving-right{
+  animation:flipOutRight .22s ease forwards;
+}
+.card.is-leaving-left{
+  animation:flipOutLeft .22s ease forwards;
 }
 @keyframes cardIn{
   from{opacity:0;transform:translateY(10px) scale(.98)}
   to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes flipOutLeft{
+  from{opacity:1;transform:rotateY(0) translateX(0)}
+  to{opacity:0;transform:rotateY(-18deg) translateX(-10px) scale(.98)}
+}
+@keyframes flipOutRight{
+  from{opacity:1;transform:rotateY(0) translateX(0)}
+  to{opacity:0;transform:rotateY(18deg) translateX(10px) scale(.98)}
+}
+@keyframes flipInRight{
+  from{opacity:0;transform:rotateY(18deg) translateX(10px) scale(.98)}
+  to{opacity:1;transform:rotateY(0) translateX(0) scale(1)}
+}
+@keyframes flipInLeft{
+  from{opacity:0;transform:rotateY(-18deg) translateX(-10px) scale(.98)}
+  to{opacity:1;transform:rotateY(0) translateX(0) scale(1)}
 }
 .chip{
   display:inline-block;
@@ -217,8 +251,130 @@ body{
   border-radius:999px;
   background:var(--primary);
 }
+.fab{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  width:60px;
+  height:60px;
+  border:none;
+  border-radius:50%;
+  background:var(--primary);
+  color:#fff;
+  font-size:24px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 6px 0 var(--primary-dark),0 12px 18px rgba(78,205,196,.28);
+  z-index:20;
+  animation:floaty 1.6s ease-in-out infinite;
+}
+.fab:active{
+  transform:translateY(4px);
+  box-shadow:0 0 0 var(--primary-dark);
+}
+.drawer{
+  position:fixed;
+  right:14px;
+  bottom:88px;
+  width:min(300px,calc(100vw - 28px));
+  max-height:62vh;
+  background:#fff;
+  border:3px dashed var(--primary);
+  border-radius:26px;
+  box-shadow:0 0 0 6px #fff,0 12px 26px rgba(78,205,196,.18);
+  overflow:hidden;
+  display:none;
+  z-index:25;
+}
+.drawer.open{
+  display:flex;
+  flex-direction:column;
+  animation:drawerIn .24s ease;
+}
+@keyframes drawerIn{
+  from{opacity:0;transform:translateY(12px) scale(.96)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.drawer-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:14px 14px 10px;
+  border-bottom:2px dashed #e8eeee;
+}
+.drawer-title{
+  font-size:14px;
+  font-weight:900;
+  color:var(--primary-dark);
+}
+.drawer-close{
+  width:34px;
+  height:34px;
+  border:none;
+  border-radius:50%;
+  background:#fff5f5;
+  color:#d15f5f;
+  font-size:18px;
+  font-weight:900;
+  cursor:pointer;
+}
+.drawer-list{
+  overflow:auto;
+  padding:10px;
+  display:grid;
+  gap:8px;
+}
+.drawer-item{
+  width:100%;
+  border:2px dashed var(--line);
+  border-radius:18px;
+  background:#fff;
+  padding:10px 12px;
+  text-align:left;
+  font:inherit;
+  color:var(--text);
+  cursor:pointer;
+  box-shadow:0 4px 0 #f0f0f0;
+}
+.drawer-item.active{
+  background:var(--soft-blue);
+  border-color:var(--primary);
+  color:var(--primary-dark);
+}
+.drawer-item-id{
+  display:block;
+  font-size:11px;
+  font-weight:900;
+  color:var(--primary-dark);
+  margin-bottom:3px;
+}
+.drawer-item-zh{
+  display:block;
+  font-size:14px;
+  font-weight:900;
+  line-height:1.35;
+}
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(253,251,247,.58);
+  display:none;
+  z-index:24;
+}
+.overlay.open{
+  display:block;
+}
 @media(min-width:700px){
   body{padding:24px}
+  .fab{
+    right:24px;
+    bottom:24px;
+  }
+  .drawer{
+    right:24px;
+    bottom:96px;
+  }
 }
 </style>
 <script>
@@ -231,7 +387,10 @@ if("serviceWorker" in navigator){
 <main class="app">
   <div class="topbar">
     <a class="back" href="./index.html">‹</a>
-    <div id="count" class="count">1 / 1</div>
+    <div class="top-actions">
+      <div id="count" class="count">1 / 1</div>
+      <a class="close-btn" href="./index.html">×</a>
+    </div>
   </div>
 
   <section id="card" class="card"></section>
@@ -242,6 +401,15 @@ if("serviceWorker" in navigator){
     <button id="nextBtn" class="nav-btn right" type="button" aria-label="下一張">›</button>
   </section>
 </main>
+<div id="overlay" class="overlay"></div>
+<aside id="drawer" class="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <div class="drawer-title">跳去連接詞</div>
+    <button id="drawerClose" class="drawer-close" type="button">×</button>
+  </div>
+  <div id="drawerList" class="drawer-list"></div>
+</aside>
+<button id="drawerToggle" class="fab" type="button" aria-label="打開清單">▸</button>
 
 <script>
 const fallback={
@@ -253,6 +421,7 @@ const fallback={
 };
 let bank=[];
 let currentIndex=0;
+let isAnimating=false;
 const $=id=>document.getElementById(id);
 
 function splitEn(text){
@@ -302,9 +471,25 @@ function renderDots(){
     return `<span class="dot ${idx===currentIndex?"active":""}"></span>`;
   }).join("");
 }
-function renderCard(){
+function renderDrawer(){
+  $("drawerList").innerHTML=bank.map((item,idx)=>`
+    <button class="drawer-item ${idx===currentIndex?"active":""}" type="button" data-index="${idx}">
+      <span class="drawer-item-id">${escapeHtml(String(item.id))}</span>
+      <span class="drawer-item-zh">${escapeHtml(item.zh||"")}</span>
+    </button>
+  `).join("");
+  [...$("drawerList").querySelectorAll(".drawer-item")].forEach(button=>{
+    button.addEventListener("click",()=>{
+      const target=Number(button.dataset.index);
+      closeDrawer();
+      jumpTo(target);
+    });
+  });
+}
+function renderCard(direction="right"){
   const data={...fallback,...bank[currentIndex]};
   const display=data.display||data.pattern||"";
+  $("card").className=`card is-entering-${direction}`;
   $("card").innerHTML=`
     <span class="chip">${escapeHtml(String(data.id))}</span>
     <h1 class="zh">${escapeHtml(data.zh||"")}</h1>
@@ -330,18 +515,55 @@ function renderCard(){
   $("prevBtn").hidden=currentIndex===0;
   $("nextBtn").hidden=currentIndex===bank.length-1;
   renderDots();
+  renderDrawer();
+  setTimeout(()=>{
+    $("card").className="card";
+    isAnimating=false;
+  },420);
+}
+function animateTo(next,direction){
+  if(isAnimating||next<0||next>=bank.length) return;
+  isAnimating=true;
+  $("card").className=`card is-leaving-${direction}`;
+  setTimeout(()=>{
+    currentIndex=next;
+    renderCard(direction);
+  },180);
 }
 function go(step){
   const next=currentIndex+step;
   if(next<0||next>=bank.length) return;
-  currentIndex=next;
-  renderCard();
+  animateTo(next,step>0?"right":"left");
+}
+function jumpTo(target){
+  if(target===currentIndex||target<0||target>=bank.length) return;
+  animateTo(target,target>currentIndex?"right":"left");
+}
+function openDrawer(){
+  $("drawer").classList.add("open");
+  $("overlay").classList.add("open");
+  $("drawer").setAttribute("aria-hidden","false");
+  $("drawerToggle").textContent="▾";
+}
+function closeDrawer(){
+  $("drawer").classList.remove("open");
+  $("overlay").classList.remove("open");
+  $("drawer").setAttribute("aria-hidden","true");
+  $("drawerToggle").textContent="▸";
+}
+function toggleDrawer(){
+  if($("drawer").classList.contains("open")) closeDrawer();
+  else openDrawer();
 }
 $("prevBtn").addEventListener("click",()=>go(-1));
 $("nextBtn").addEventListener("click",()=>go(1));
+$("drawerToggle").addEventListener("click",toggleDrawer);
+$("drawerClose").addEventListener("click",closeDrawer);
+$("overlay").addEventListener("click",closeDrawer);
 document.addEventListener("keydown",event=>{
   if(event.key==="ArrowLeft") go(-1);
   if(event.key==="ArrowRight") go(1);
+  if(event.key==="Escape") closeDrawer();
 });
 loadBank()
   .then(items=>{
@@ -352,6 +574,7 @@ loadBank()
     $("card").innerHTML=`<h1 class="zh">載入失敗</h1>`;
     $("prevBtn").hidden=true;
     $("nextBtn").hidden=true;
+    $("drawerToggle").hidden=true;
   });
 </script>
 </body>
