@@ -37,6 +37,7 @@ jobs:
           export SSH_ASKPASS_REQUIRE=force
           export DISPLAY=:0
           setsid ssh-add ~/.ssh/siteground_key < /dev/null
+          ssh -p "${{ secrets.SG_PORT }}" "${{ secrets.SG_USER }}@${{ secrets.SG_HOST }}" "pwd && ls -la && echo '--- public_html ---' && ls -la public_html 2>/dev/null || true"
           ssh -p "${{ secrets.SG_PORT }}" "${{ secrets.SG_USER }}@${{ secrets.SG_HOST }}" "mkdir -p '${{ secrets.SG_REMOTE_PATH }}'"
         env:
           SG_SSH_PASSPHRASE: ${{ secrets.SG_SSH_PASSPHRASE }}
@@ -57,5 +58,6 @@ jobs:
             --exclude "*.ps1" \
             -e "ssh -p ${{ secrets.SG_PORT }}" \
             ./ "${{ secrets.SG_USER }}@${{ secrets.SG_HOST }}:${{ secrets.SG_REMOTE_PATH }}/"
+          ssh -p "${{ secrets.SG_PORT }}" "${{ secrets.SG_USER }}@${{ secrets.SG_HOST }}" "echo '--- deployed path ---' && ls -la '${{ secrets.SG_REMOTE_PATH }}' 2>/dev/null || true"
         env:
           SG_SSH_PASSPHRASE: ${{ secrets.SG_SSH_PASSPHRASE }}
