@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#7f9c96">
+<meta name="theme-color" content="#4ecdc4">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon-512-maskable.png" type="image/png">
 <link rel="apple-touch-icon" href="./icon-512-maskable.png">
@@ -17,131 +17,86 @@
   --secondary:#ffe66d;
   --secondary-dark:#ffb703;
   --text:#444444;
-  --muted:#777;
   --line:#d1d8e0;
   --panel:#ffffff;
-  --soft-blue:#e0fbfc;
-  --soft-pink:#fff5f5;
+  --soft:#e0fbfc;
+  --soft-2:#f8f9fa;
 }
-*{box-sizing:border-box}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%}
 body{
-  -webkit-tap-highlight-color:transparent;
   font-family:"M PLUS Rounded 1c","Zen Maru Gothic","Hiragino Kaku Gothic ProN",sans-serif;
   background:var(--base-bg);
   color:var(--text);
-  padding:14px;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:18px;
 }
 .app{
-  width:min(460px,100%);
-  margin:0 auto;
+  width:min(560px,100%);
 }
-.hero{
-  background:var(--panel);
-  border:3px dashed var(--primary);
-  border-radius:28px;
-  padding:20px;
-  box-shadow:0 0 0 6px #fff,0 10px 20px rgba(78,205,196,.15);
-}
-.eyebrow{
-  display:inline-block;
-  padding:7px 12px;
-  border-radius:999px;
-  background:#fffdf5;
-  color:var(--primary-dark);
-  font-size:11px;
-  font-weight:900;
-  letter-spacing:.08em;
-}
-h1{
-  margin:12px 0 6px;
-  font-size:34px;
+.title{
+  text-align:center;
+  margin:0 0 22px;
+  font-size:42px;
   line-height:1.02;
   font-weight:900;
   color:var(--primary-dark);
 }
-.sub{
-  margin:0;
-  color:#666;
-  font-size:14px;
-  line-height:1.6;
-}
-.grid{
+.menu{
   display:grid;
-  gap:12px;
-  margin-top:14px;
+  gap:16px;
 }
-.card{
-  display:block;
-  text-decoration:none;
-  color:inherit;
-  background:#fff;
-  border:2px dashed var(--line);
-  border-radius:24px;
-  padding:16px;
-  box-shadow:0 4px 0 #f0f0f0;
+.row{
+  display:grid;
+  gap:16px;
 }
-.card-top{
+.row.two{
+  grid-template-columns:1fr 1fr;
+}
+.pill{
   display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:12px;
-}
-.tag{
-  display:inline-block;
-  min-width:64px;
-  padding:6px 10px;
+  justify-content:center;
+  align-items:center;
+  min-height:92px;
+  padding:18px 20px;
   border-radius:999px;
-  background:var(--primary);
-  color:#fff;
-  font-size:11px;
+  text-decoration:none;
+  font-size:28px;
   font-weight:900;
   text-align:center;
+  transition:transform .12s ease,box-shadow .12s ease,background-color .12s ease;
 }
-.tag.soft{
-  background:#f8f9fa;
-  color:#888;
+.pill:active{
+  transform:translateY(3px);
 }
-.title{
-  margin:10px 0 0;
-  font-size:22px;
-  font-weight:900;
+.pill-main{
+  background:#fff;
+  border:3px dashed var(--primary);
   color:var(--primary-dark);
+  box-shadow:0 6px 0 #bde0e1;
 }
-.desc{
-  margin:8px 0 0;
-  color:#666;
-  font-size:13px;
-  line-height:1.55;
+.pill-main:hover{
+  background:var(--soft);
 }
-.arrow{
-  font-size:20px;
-  color:var(--primary-dark);
-  font-weight:900;
+.pill-level{
+  background:var(--secondary);
+  border:none;
+  color:#5d4037;
+  box-shadow:0 6px 0 var(--secondary-dark),0 10px 14px rgba(255,193,7,.26);
 }
-.card:hover{
-  background:var(--soft-blue);
-  border-color:var(--primary);
-  transform:translateY(-2px);
+.pill-off{
+  background:#fff;
+  border:3px dashed var(--line);
+  color:#9aa4aa;
+  box-shadow:0 6px 0 #eceff1;
 }
-.card.disabled{
-  opacity:.58;
-}
-.footer{
-  margin-top:12px;
-  padding:14px 16px;
-  border-radius:20px;
-  background:#fff8e1;
-  border:3px dashed var(--secondary);
-  color:#6b5a28;
-  font-size:12px;
-  line-height:1.6;
-}
-strong{font-weight:900}
-@media(min-width:700px){
-  body{padding:24px}
-  .app{width:min(980px,100%)}
-  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:640px){
+  .title{font-size:36px;margin-bottom:18px}
+  .pill{min-height:84px;font-size:24px}
+  .menu,.row{gap:14px}
 }
 </style>
 <script>
@@ -152,61 +107,22 @@ if("serviceWorker" in navigator){
 </head>
 <body>
 <main class="app">
-  <section class="hero">
-    <span class="eyebrow">MAIN MENU</span>
-    <h1><strong>DSE</strong><br><strong>Connective</strong></h1>
-    <p class="sub">手機優先。簡潔。直接開始。</p>
-  </section>
+  <h1 class="title">DSE<br>Connective</h1>
 
-  <section class="grid">
-    <a class="card" href="./revision.html">
-      <div class="card-top">
-        <span class="tag soft">NOTE</span>
-        <span class="arrow">›</span>
-      </div>
-      <p class="title"><strong>溫習表</strong></p>
-      <p class="desc">note card + 例句</p>
-    </a>
-
-    <a class="card" href="./level1.html">
-      <div class="card-top">
-        <span class="tag">LEVEL 1</span>
-        <span class="arrow">›</span>
-      </div>
-      <p class="title"><strong>選擇題</strong></p>
-      <p class="desc">中文 → 揀英文</p>
-    </a>
-
-    <a class="card" href="./eng_game_connectives.html">
-      <div class="card-top">
-        <span class="tag">LEVEL 2</span>
-        <span class="arrow">›</span>
-      </div>
-      <p class="title"><strong>直接打字</strong></p>
-      <p class="desc">中文 → 打英文</p>
-    </a>
-
-    <div class="card disabled">
-      <div class="card-top">
-        <span class="tag soft">LEVEL 3</span>
-        <span class="arrow">…</span>
-      </div>
-      <p class="title"><strong>句子選擇</strong></p>
-      <p class="desc">English sentence → 揀 connectives</p>
+  <section class="menu">
+    <div class="row">
+      <a class="pill pill-main" href="./revision.html">溫習表</a>
     </div>
 
-    <div class="card disabled">
-      <div class="card-top">
-        <span class="tag soft">LEVEL 4</span>
-        <span class="arrow">…</span>
-      </div>
-      <p class="title"><strong>句子填空</strong></p>
-      <p class="desc">English sentence → 填答案</p>
+    <div class="row two">
+      <a class="pill pill-level" href="./level1.html">LEVEL 1</a>
+      <a class="pill pill-level" href="./eng_game_connectives.html">LEVEL 2</a>
     </div>
-  </section>
 
-  <section class="footer">
-    <strong>App feel</strong>：加到主畫面後會更似原生 app。
+    <div class="row two">
+      <span class="pill pill-off">LEVEL 3</span>
+      <span class="pill pill-off">LEVEL 4</span>
+    </div>
   </section>
 </main>
 </body>
