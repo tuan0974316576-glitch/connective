@@ -466,6 +466,28 @@ const fallback={
 let bank=[];
 let currentIndex=0;
 let isAnimating=false;
+const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+function unlockAudio(){if(audioCtx.state==="suspended")audioCtx.resume().catch(()=>{})}
+function blip(freq,type,duration,volume=.055){
+  unlockAudio();
+  const osc=audioCtx.createOscillator();
+  const gain=audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.type=type;
+  osc.frequency.value=freq;
+  gain.gain.setValueAtTime(volume,audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);
+  osc.start();
+  osc.stop(audioCtx.currentTime+duration);
+}
+const sfx={
+  tap:()=>blip(420,"triangle",.05,.03),
+  flipLeft:()=>{blip(410,"triangle",.06,.04);setTimeout(()=>blip(320,"triangle",.08,.035),70)},
+  flipRight:()=>{blip(410,"triangle",.06,.04);setTimeout(()=>blip(520,"triangle",.08,.035),70)},
+  drawerOpen:()=>{blip(560,"triangle",.06,.04);setTimeout(()=>blip(740,"triangle",.08,.035),60)},
+  drawerClose:()=>{blip(520,"triangle",.06,.035);setTimeout(()=>blip(360,"triangle",.08,.03),60)}
+};
 const $=id=>document.getElementById(id);
 
 function splitEn(text){
@@ -568,6 +590,7 @@ function renderCard(direction="right"){
 function animateTo(next,direction){
   if(isAnimating||next<0||next>=bank.length) return;
   isAnimating=true;
+  direction==="right"?sfx.flipRight():sfx.flipLeft();
   $("card").className=`card is-leaving-${direction}`;
   setTimeout(()=>{
     currentIndex=next;
@@ -584,6 +607,7 @@ function jumpTo(target){
   animateTo(target,target>currentIndex?"right":"left");
 }
 function openDrawer(){
+  sfx.drawerOpen();
   $("drawer").classList.add("open");
   $("overlay").classList.add("open");
   $("drawer").setAttribute("aria-hidden","false");
@@ -591,6 +615,7 @@ function openDrawer(){
   $("drawerToggle").classList.add("open");
 }
 function closeDrawer(){
+  if($("drawer").classList.contains("open")) sfx.drawerClose();
   $("drawer").classList.remove("open");
   $("overlay").classList.remove("open");
   $("drawer").setAttribute("aria-hidden","true");
@@ -606,6 +631,13 @@ $("nextBtn").addEventListener("click",()=>go(1));
 $("drawerToggle").addEventListener("click",toggleDrawer);
 $("drawerClose").addEventListener("click",closeDrawer);
 $("overlay").addEventListener("click",closeDrawer);
+document.addEventListener("pointerdown",unlockAudio,{once:true});
+document.addEventListener("click",event=>{
+  const target=event.target;
+  if(target.closest(".back")||target.closest(".close-btn")||target.closest(".drawer-item")){
+    sfx.tap();
+  }
+});
 document.addEventListener("keydown",event=>{
   if(event.key==="ArrowLeft") go(-1);
   if(event.key==="ArrowRight") go(1);

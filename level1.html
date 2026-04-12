@@ -336,6 +336,27 @@ let index=0;
 let score=0;
 let answered=false;
 let reviewLog=[];
+const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+function unlockAudio(){if(audioCtx.state==="suspended")audioCtx.resume().catch(()=>{})}
+function blip(freq,type,duration,volume=.06){
+  unlockAudio();
+  const osc=audioCtx.createOscillator();
+  const gain=audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.type=type;
+  osc.frequency.value=freq;
+  gain.gain.setValueAtTime(volume,audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);
+  osc.start();
+  osc.stop(audioCtx.currentTime+duration);
+}
+const sfx={
+  tap:()=>blip(420,"triangle",.05,.035),
+  next:()=>{blip(520,"triangle",.05,.04);setTimeout(()=>blip(620,"triangle",.08,.035),60)},
+  ok:()=>{blip(660,"triangle",.08,.05);setTimeout(()=>blip(880,"triangle",.12,.045),80)},
+  bad:()=>{blip(240,"sawtooth",.12,.055);setTimeout(()=>blip(170,"sawtooth",.16,.04),90)}
+};
 const answerGroupsMap={
   1:[["since"],["as"],["because"],["mainly because"],["partly because"],["simply because"]],
   2:[["due to"],["thanks to"],["because of"]],
@@ -434,10 +455,12 @@ function checkAnswer(button,item,correct){
   if(isCorrect){
     score++;
     button.classList.add("correct");
+    sfx.ok();
   }else{
     button.classList.add("wrong");
     correctButtons.forEach(btn=>btn.classList.add("correct"));
     reviewLog.push({zh:item.zh,chosen,correct});
+    sfx.bad();
   }
   [...$("choices").querySelectorAll(".choice")].forEach(btn=>{
     btn.disabled=true;
@@ -475,8 +498,16 @@ function startGame(){
   showQuestion();
 }
 $("nextBtn").addEventListener("click",()=>{
+  sfx.next();
   index++;
   showQuestion();
+});
+document.addEventListener("pointerdown",unlockAudio,{once:true});
+document.addEventListener("click",event=>{
+  const target=event.target;
+  if(target.closest(".choice")||target.closest(".btn")||target.closest(".back")||target.closest("summary")){
+    sfx.tap();
+  }
 });
 loadBank()
   .then(items=>{
