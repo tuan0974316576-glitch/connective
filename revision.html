@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#7f9c96">
+<meta name="theme-color" content="#4ecdc4">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon-512-maskable.png" type="image/png">
 <link rel="apple-touch-icon" href="./icon-512-maskable.png">
@@ -23,20 +23,23 @@
   --soft-blue:#e0fbfc;
   --soft-pink:#fff5f5;
 }
-*{box-sizing:border-box}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%}
 body{
-  -webkit-tap-highlight-color:transparent;
   font-family:"M PLUS Rounded 1c","Zen Maru Gothic","Hiragino Kaku Gothic ProN",sans-serif;
   background:var(--base-bg);
   color:var(--text);
   padding:14px;
 }
-.app{width:min(560px,100%);margin:0 auto}
-.top{
+.app{
+  width:min(560px,100%);
+  margin:0 auto;
+}
+.topbar{
   display:flex;
-  gap:10px;
   align-items:center;
+  justify-content:space-between;
+  gap:10px;
   margin-bottom:12px;
 }
 .back{
@@ -54,65 +57,32 @@ body{
   font-weight:900;
   box-shadow:0 4px 0 #f0f0f0;
 }
-.hero{
-  background:var(--panel);
-  border:3px dashed var(--primary);
-  border-radius:28px;
-  padding:18px;
-  box-shadow:0 0 0 6px #fff,0 10px 20px rgba(78,205,196,.15);
-}
-.eyebrow{
-  display:inline-block;
-  padding:7px 12px;
+.count{
+  padding:8px 14px;
   border-radius:999px;
-  background:#fffdf5;
-  color:var(--primary-dark);
-  font-size:11px;
-  font-weight:900;
-  letter-spacing:.08em;
-}
-h1{
-  margin:12px 0 6px;
-  font-size:30px;
-  line-height:1.08;
-  color:var(--primary-dark);
-}
-.sub{
-  margin:0;
-  color:#666;
-  font-size:13px;
-  line-height:1.55;
-}
-.search{
-  width:100%;
-  margin:12px 0;
-  padding:14px 16px;
-  border-radius:20px;
   border:2px dashed var(--line);
   background:#fff;
-  font-size:16px;
   box-shadow:0 4px 0 #f0f0f0;
-}
-.list{
-  display:grid;
-  gap:12px;
+  font-size:12px;
+  font-weight:900;
+  color:var(--primary-dark);
 }
 .card{
   background:#fff;
-  border:2px dashed var(--line);
-  border-radius:24px;
-  padding:16px;
-  box-shadow:0 4px 0 #f0f0f0;
+  border:3px dashed var(--primary);
+  border-radius:30px;
+  box-shadow:0 0 0 6px #fff,0 10px 20px rgba(78,205,196,.15);
+  padding:18px;
+  animation:cardIn .28s ease;
 }
-.head{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  align-items:flex-start;
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(10px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
 }
-.id{
-  min-width:56px;
-  padding:6px 10px;
+.chip{
+  display:inline-block;
+  min-width:60px;
+  padding:6px 12px;
   border-radius:999px;
   background:var(--primary);
   color:#fff;
@@ -121,73 +91,135 @@ h1{
   font-weight:900;
 }
 .zh{
-  margin:10px 0 4px;
-  font-size:23px;
-  line-height:1.16;
+  margin:14px 0 8px;
+  font-size:30px;
+  line-height:1.12;
   font-weight:900;
   color:var(--primary-dark);
 }
 .pattern{
-  color:#666;
+  color:var(--muted);
   font-size:13px;
-  line-height:1.5;
+  line-height:1.55;
 }
 .answer{
-  margin-top:12px;
-  padding:12px 14px;
+  margin-top:14px;
   background:#fffdf5;
   border:2px dashed var(--secondary);
-  border-radius:20px;
-  font-size:17px;
+  border-radius:22px;
+  padding:14px;
+}
+.answer-label,.note-label,.eg-label{
+  display:inline-block;
+  margin-bottom:8px;
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:900;
+}
+.answer-label{
+  background:var(--secondary);
+  color:#6b5400;
+}
+.note-label{
+  background:var(--soft-blue);
+  color:var(--primary-dark);
+}
+.eg-label{
+  background:var(--soft-pink);
+  color:#d15f5f;
+}
+.answer-text{
+  font-size:19px;
   line-height:1.5;
+  font-weight:900;
   color:var(--primary-dark);
 }
 .note{
-  margin-top:10px;
-  color:#666;
-  font-size:13px;
-  line-height:1.6;
-}
-details{
   margin-top:12px;
-  border:2px dashed #d1d8e0;
-  border-radius:18px;
   background:#fff;
-  overflow:hidden;
+  border:2px dashed var(--line);
+  border-radius:22px;
+  padding:14px;
+  font-size:13px;
+  line-height:1.65;
 }
-summary{
-  list-style:none;
-  cursor:pointer;
-  padding:13px 14px;
+.examples{
+  margin-top:12px;
+  background:#fff;
+  border:2px dashed var(--line);
+  border-radius:22px;
+  padding:14px;
+}
+.group + .group{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:2px dashed #edf1f2;
+}
+.group-title{
+  margin:0 0 8px;
   font-size:14px;
   font-weight:900;
   color:var(--primary-dark);
 }
-summary::-webkit-details-marker{display:none}
-.examples{
-  padding:0 14px 14px;
-}
-.group{
-  padding-top:6px;
-}
-.group strong{
-  display:block;
-  margin-bottom:6px;
-  color:var(--primary-dark);
-}
-.group p{
+.en,.zh-line{
   margin:6px 0;
   font-size:13px;
   line-height:1.6;
 }
-.zh-line{color:#666}
-.empty{
-  display:none;
-  text-align:center;
-  padding:18px;
-  color:#666;
+.zh-line{color:var(--muted)}
+.nav{
+  display:grid;
+  grid-template-columns:56px 1fr 56px;
+  gap:12px;
+  align-items:center;
+  margin-top:16px;
 }
-strong{font-weight:900}
+.nav-btn{
+  width:56px;
+  height:56px;
+  border:none;
+  border-radius:50%;
+  background:var(--secondary);
+  color:#5d4037;
+  font-size:28px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 4px 0 var(--secondary-dark),0 8px 10px rgba(255,193,7,.3);
+  animation:floaty 1.6s ease-in-out infinite;
+}
+.nav-btn.right{animation-delay:.2s}
+.nav-btn:active{
+  transform:translateY(4px);
+  box-shadow:0 0 0 var(--secondary-dark);
+}
+.nav-btn[hidden]{visibility:hidden}
+@keyframes floaty{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-3px)}
+}
+.dots{
+  display:flex;
+  justify-content:center;
+  gap:7px;
+  padding:0 6px;
+  overflow:hidden;
+}
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#d9e6e8;
+  flex:0 0 auto;
+}
+.dot.active{
+  width:20px;
+  border-radius:999px;
+  background:var(--primary);
+}
+@media(min-width:700px){
+  body{padding:24px}
+}
 </style>
 <script>
 if("serviceWorker" in navigator){
@@ -197,19 +229,18 @@ if("serviceWorker" in navigator){
 </head>
 <body>
 <main class="app">
-  <div class="top">
+  <div class="topbar">
     <a class="back" href="./index.html">‹</a>
+    <div id="count" class="count">1 / 1</div>
   </div>
 
-  <section class="hero">
-    <span class="eyebrow">NOTE CARD</span>
-    <h1><strong>溫習表</strong></h1>
-    <p class="sub">卡片先睇重點。例句再展開。</p>
-  </section>
+  <section id="card" class="card"></section>
 
-  <input id="search" class="search" type="search" placeholder="搜尋中文 / 英文">
-  <section id="list" class="list"></section>
-  <section id="empty" class="empty">找不到結果</section>
+  <section class="nav">
+    <button id="prevBtn" class="nav-btn left" type="button" aria-label="上一張">‹</button>
+    <div id="dots" class="dots"></div>
+    <button id="nextBtn" class="nav-btn right" type="button" aria-label="下一張">›</button>
+  </section>
 </main>
 
 <script>
@@ -220,22 +251,16 @@ const fallback={
   l5en:"Advanced example will be added.",
   l5zh:"進階例句稍後補上。"
 };
+let bank=[];
+let currentIndex=0;
+const $=id=>document.getElementById(id);
 
 function splitEn(text){
   return (text||"").match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[];
 }
-
 function splitZh(text){
   return (text||"").match(/[^。！？]+[。！？]+|[^。！？]+$/g)||[];
 }
-
-function parseExamples(enText,zhText){
-  const en=splitEn(enText).map(s=>s.trim()).filter(Boolean);
-  const zh=splitZh(zhText).map(s=>s.trim()).filter(Boolean);
-  const count=Math.max(en.length,zh.length);
-  return Array.from({length:count},(_,idx)=>({en:en[idx]||"",zh:zh[idx]||""}));
-}
-
 function escapeHtml(value){
   return String(value)
     .replace(/&/g,"&amp;")
@@ -243,7 +268,12 @@ function escapeHtml(value){
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;");
 }
-
+function parseExamples(enText,zhText){
+  const en=splitEn(enText).map(s=>s.trim()).filter(Boolean);
+  const zh=splitZh(zhText).map(s=>s.trim()).filter(Boolean);
+  const count=Math.max(en.length,zh.length);
+  return Array.from({length:count},(_,idx)=>({en:en[idx]||"",zh:zh[idx]||""}));
+}
 async function loadBank(){
   const response=await fetch("./eng_game_connectives.html",{cache:"no-store"});
   const html=await response.text();
@@ -251,69 +281,77 @@ async function loadBank(){
   if(!match) throw new Error("bank not found");
   return new Function(match[1] + "return bank;")();
 }
-
-function renderGroup(title,enText,zhText){
-  const items=parseExamples(enText,zhText).map(item=>`
-    <p>${escapeHtml(item.en)}</p>
-    <p class="zh-line">${escapeHtml(item.zh)}</p>
-  `).join("");
-  return `<div class="group"><strong>${title}</strong>${items}</div>`;
+function renderExamples(title,enText,zhText){
+  const list=parseExamples(enText,zhText);
+  return `
+    <div class="group">
+      <p class="group-title">${title}</p>
+      ${list.map(item=>`<p class="en">${escapeHtml(item.en)}</p><p class="zh-line">${escapeHtml(item.zh)}</p>`).join("")}
+    </div>
+  `;
 }
-
-function renderCards(items){
-  const list=document.getElementById("list");
-  list.innerHTML=items.map(item=>{
-    const data={...fallback,...item};
-    const display=data.display||data.pattern||"";
-    return `
-      <article class="card" data-search="${escapeHtml([
-        data.zh,data.pattern,data.display,data.note,data.exp,data.l4en,data.l4zh,data.l5en,data.l5zh
-      ].join(" ").toLowerCase())}">
-        <div class="head">
-          <div>
-            <div class="id">${escapeHtml(String(data.id))}</div>
-            <div class="zh">${escapeHtml(data.zh||"")}</div>
-            <div class="pattern">${escapeHtml(data.pattern||"")}</div>
-          </div>
-        </div>
-        <div class="answer"><strong>${escapeHtml(display)}</strong></div>
-        <div class="note">${escapeHtml(data.note||data.exp||"")}</div>
-        <details>
-          <summary>例句</summary>
-          <div class="examples">
-            ${renderGroup("Level 4",data.l4en,data.l4zh)}
-            ${renderGroup("Level 5",data.l5en,data.l5zh)}
-          </div>
-        </details>
-      </article>
-    `;
+function renderDots(){
+  const dots=$("dots");
+  const maxDots=Math.min(bank.length,9);
+  let start=0;
+  if(bank.length>maxDots){
+    start=Math.max(0,Math.min(currentIndex-4,bank.length-maxDots));
+  }
+  dots.innerHTML=Array.from({length:maxDots},(_,i)=>{
+    const idx=start+i;
+    return `<span class="dot ${idx===currentIndex?"active":""}"></span>`;
   }).join("");
 }
+function renderCard(){
+  const data={...fallback,...bank[currentIndex]};
+  const display=data.display||data.pattern||"";
+  $("card").innerHTML=`
+    <span class="chip">${escapeHtml(String(data.id))}</span>
+    <h1 class="zh">${escapeHtml(data.zh||"")}</h1>
+    <div class="pattern">${escapeHtml(data.pattern||"")}</div>
 
-function attachSearch(){
-  const input=document.getElementById("search");
-  const cards=[...document.querySelectorAll(".card")];
-  const empty=document.getElementById("empty");
-  input.addEventListener("input",()=>{
-    const keyword=input.value.trim().toLowerCase();
-    let shown=0;
-    cards.forEach(card=>{
-      const visible=!keyword || card.dataset.search.includes(keyword);
-      card.style.display=visible?"block":"none";
-      if(visible) shown++;
-    });
-    empty.style.display=shown?"none":"block";
-  });
+    <section class="answer">
+      <span class="answer-label">CORE</span>
+      <div class="answer-text">${escapeHtml(display)}</div>
+    </section>
+
+    <section class="note">
+      <span class="note-label">NOTE</span>
+      <div>${escapeHtml(data.note||data.exp||"")}</div>
+    </section>
+
+    <section class="examples">
+      <span class="eg-label">EXAMPLE</span>
+      ${renderExamples("Level 4",data.l4en,data.l4zh)}
+      ${renderExamples("Level 5",data.l5en,data.l5zh)}
+    </section>
+  `;
+  $("count").textContent=`${currentIndex+1} / ${bank.length}`;
+  $("prevBtn").hidden=currentIndex===0;
+  $("nextBtn").hidden=currentIndex===bank.length-1;
+  renderDots();
 }
-
+function go(step){
+  const next=currentIndex+step;
+  if(next<0||next>=bank.length) return;
+  currentIndex=next;
+  renderCard();
+}
+$("prevBtn").addEventListener("click",()=>go(-1));
+$("nextBtn").addEventListener("click",()=>go(1));
+document.addEventListener("keydown",event=>{
+  if(event.key==="ArrowLeft") go(-1);
+  if(event.key==="ArrowRight") go(1);
+});
 loadBank()
   .then(items=>{
-    renderCards(items);
-    attachSearch();
+    bank=items;
+    renderCard();
   })
   .catch(()=>{
-    document.getElementById("empty").style.display="block";
-    document.getElementById("empty").textContent="載入失敗";
+    $("card").innerHTML=`<h1 class="zh">載入失敗</h1>`;
+    $("prevBtn").hidden=true;
+    $("nextBtn").hidden=true;
   });
 </script>
 </body>
