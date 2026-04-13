@@ -44,10 +44,20 @@ body{
   line-height:1.02;
   font-weight:900;
   color:var(--primary-dark);
+  animation:titleFloat 2.8s ease-in-out infinite;
 }
 .menu{
   display:grid;
   gap:16px;
+  animation:menuBob 3.2s ease-in-out infinite;
+}
+@keyframes titleFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+}
+@keyframes menuBob{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(3px)}
 }
 .row{
   display:grid;
@@ -71,6 +81,17 @@ body{
 }
 .pill:active{
   transform:translateY(3px);
+}
+.pill{
+  animation:pillFloat 2.2s ease-in-out infinite;
+}
+.row:nth-child(2) .pill:nth-child(1){animation-delay:.12s}
+.row:nth-child(2) .pill:nth-child(2){animation-delay:.24s}
+.row:nth-child(3) .pill:nth-child(1){animation-delay:.36s}
+.row:nth-child(3) .pill:nth-child(2){animation-delay:.48s}
+@keyframes pillFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-3px)}
 }
 .pill-main{
   background:#fff;
@@ -107,7 +128,7 @@ if("serviceWorker" in navigator){
 </head>
 <body>
 <main class="app">
-  <h1 class="title">主選單</h1>
+  <h1 class="title">DSE 連接詞大全</h1>
 
   <section class="menu">
     <div class="row">
