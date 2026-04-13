@@ -361,7 +361,7 @@ let answered=false;
 let reviewLog=[];
 const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
 function unlockAudio(){if(audioCtx.state==="suspended")audioCtx.resume().catch(()=>{})}
-function blip(freq,type,duration,volume=.06){
+function blip(freq,type,duration,volume=.12){
   unlockAudio();
   const osc=audioCtx.createOscillator();
   const gain=audioCtx.createGain();
@@ -375,10 +375,10 @@ function blip(freq,type,duration,volume=.06){
   osc.stop(audioCtx.currentTime+duration);
 }
 const sfx={
-  tap:()=>blip(420,"triangle",.05,.035),
-  next:()=>{blip(520,"triangle",.05,.04);setTimeout(()=>blip(620,"triangle",.08,.035),60)},
-  ok:()=>{blip(660,"triangle",.08,.05);setTimeout(()=>blip(880,"triangle",.12,.045),80)},
-  bad:()=>{blip(240,"sawtooth",.12,.055);setTimeout(()=>blip(170,"sawtooth",.16,.04),90)}
+  tap:()=>blip(420,"triangle",.06,.08),
+  next:()=>{blip(520,"triangle",.07,.11);setTimeout(()=>blip(620,"triangle",.1,.09),60)},
+  ok:()=>{blip(660,"triangle",.1,.14);setTimeout(()=>blip(880,"triangle",.14,.12),80)},
+  bad:()=>{blip(240,"sawtooth",.15,.15);setTimeout(()=>blip(170,"sawtooth",.2,.11),90)}
 };
 const answerGroupsMap={
   1:[["since"],["as"],["because"],["mainly because"],["partly because"],["simply because"]],

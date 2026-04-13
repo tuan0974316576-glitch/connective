@@ -140,13 +140,13 @@ const QN=20,TL=30;let qs=[],i=0,score=0,checked=false,left=TL,timer,wrong=[],his
 const $=id=>document.getElementById(id),dom={game:$("game"),end:$("end"),n:$("n"),t:$("t"),s:$("s"),fill:$("fill"),tt:$("tt"),main:$("main"),sub:$("sub"),note:$("note"),inputGrid:$("input-grid"),teach:$("teach"),exp:$("exp"),eg4:$("eg4"),eg5:$("eg5"),check:$("check"),next:$("next")};
 const ctx=new(window.AudioContext||window.webkitAudioContext)();
 function ensureAudio(){if(ctx.state==="suspended")ctx.resume().catch(()=>{})}
-function tone(f,t,d,gain=.1){ensureAudio();const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type=t;o.frequency.value=f;g.gain.setValueAtTime(gain,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d);o.start();o.stop(ctx.currentTime+d)}
+function tone(f,t,d,gain=.16){ensureAudio();const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type=t;o.frequency.value=f;g.gain.setValueAtTime(gain,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d);o.start();o.stop(ctx.currentTime+d)}
 const sfx={
-ok:()=>{tone(660,"square",.08,.08);setTimeout(()=>tone(880,"square",.18,.08),90)},
-bad:()=>{tone(220,"sawtooth",.18,.08);setTimeout(()=>tone(160,"sawtooth",.2,.06),120)},
-next:()=>tone(520,"triangle",.08,.05),
-tap:()=>tone(420,"sine",.04,.03),
-timeout:()=>{tone(260,"square",.12,.07);setTimeout(()=>tone(220,"square",.12,.06),100);setTimeout(()=>tone(180,"square",.18,.06),200)}
+ok:()=>{tone(660,"square",.08,.14);setTimeout(()=>tone(880,"square",.18,.14),90)},
+bad:()=>{tone(220,"sawtooth",.18,.14);setTimeout(()=>tone(160,"sawtooth",.2,.11),120)},
+next:()=>tone(520,"triangle",.08,.1),
+tap:()=>tone(420,"sine",.04,.08),
+timeout:()=>{tone(260,"square",.12,.13);setTimeout(()=>tone(220,"square",.12,.11),100);setTimeout(()=>tone(180,"square",.18,.11),200)}
 };
 const norm=v=>v.toLowerCase()
 .replace(/\bas adjective as subject be\b/g,"adjective as subject be")

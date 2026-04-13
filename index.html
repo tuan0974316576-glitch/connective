@@ -128,7 +128,7 @@ if("serviceWorker" in navigator){
 <script>
 const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
 function unlockAudio(){if(audioCtx.state==="suspended")audioCtx.resume().catch(()=>{})}
-function blip(freq,type,duration,volume=.05){
+function blip(freq,type,duration,volume=.11){
   unlockAudio();
   const osc=audioCtx.createOscillator();
   const gain=audioCtx.createGain();
@@ -142,8 +142,8 @@ function blip(freq,type,duration,volume=.05){
   osc.stop(audioCtx.currentTime+duration);
 }
 const sfx={
-  tap:()=>blip(420,"triangle",.05,.035),
-  open:()=>{blip(520,"triangle",.06,.04);setTimeout(()=>blip(680,"triangle",.08,.04),60);}
+  tap:()=>blip(420,"triangle",.06,.08),
+  open:()=>{blip(520,"triangle",.08,.11);setTimeout(()=>blip(680,"triangle",.12,.1),60);}
 };
 document.addEventListener("pointerdown",unlockAudio,{once:true});
 [...document.querySelectorAll(".pill")].forEach(button=>{

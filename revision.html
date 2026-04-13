@@ -474,7 +474,7 @@ let isAnimating=false;
 let isDrawerClosing=false;
 const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
 function unlockAudio(){if(audioCtx.state==="suspended")audioCtx.resume().catch(()=>{})}
-function blip(freq,type,duration,volume=.055){
+function blip(freq,type,duration,volume=.12){
   unlockAudio();
   const osc=audioCtx.createOscillator();
   const gain=audioCtx.createGain();
@@ -488,11 +488,11 @@ function blip(freq,type,duration,volume=.055){
   osc.stop(audioCtx.currentTime+duration);
 }
 const sfx={
-  tap:()=>blip(420,"triangle",.05,.03),
-  flipLeft:()=>{blip(410,"triangle",.06,.04);setTimeout(()=>blip(320,"triangle",.08,.035),70)},
-  flipRight:()=>{blip(410,"triangle",.06,.04);setTimeout(()=>blip(520,"triangle",.08,.035),70)},
-  drawerOpen:()=>{blip(560,"triangle",.06,.04);setTimeout(()=>blip(740,"triangle",.08,.035),60)},
-  drawerClose:()=>{blip(520,"triangle",.06,.035);setTimeout(()=>blip(360,"triangle",.08,.03),60)}
+  tap:()=>blip(420,"triangle",.06,.08),
+  flipLeft:()=>{blip(410,"triangle",.08,.12);setTimeout(()=>blip(320,"triangle",.1,.1),70)},
+  flipRight:()=>{blip(410,"triangle",.08,.12);setTimeout(()=>blip(520,"triangle",.1,.1),70)},
+  drawerOpen:()=>{blip(560,"triangle",.08,.13);setTimeout(()=>blip(740,"triangle",.12,.11),60)},
+  drawerClose:()=>{blip(520,"triangle",.08,.11);setTimeout(()=>blip(360,"triangle",.1,.09),60)}
 };
 const $=id=>document.getElementById(id);
 
