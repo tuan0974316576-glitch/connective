@@ -171,33 +171,64 @@ body{
   font-size:15px;
   color:var(--primary-dark);
 }
-details{
+.examples-wrap{
   border:2px dashed var(--line);
   border-radius:18px;
   background:#fff;
   overflow:hidden;
 }
-summary{
-  list-style:none;
-  cursor:pointer;
+.example-preview,
+.examples-more{
   padding:12px 14px;
-  font-size:14px;
-  font-weight:900;
-  color:var(--primary-dark);
-}
-summary::-webkit-details-marker{display:none}
-.examples{
-  padding:0 14px 14px;
 }
 .examples strong{
   display:block;
-  margin:8px 0 6px;
+  margin:0 0 6px;
   color:var(--primary-dark);
 }
 .examples p{
   margin:6px 0;
   font-size:13px;
   line-height:1.6;
+}
+.example-toggle{
+  width:100%;
+  border:none;
+  border-top:2px dashed #edf1f2;
+  background:#fff;
+  color:var(--primary-dark);
+  padding:10px 14px 12px;
+  font:inherit;
+  font-size:13px;
+  font-weight:900;
+  cursor:pointer;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.example-toggle[hidden]{
+  display:none;
+}
+.toggle-arrow{
+  font-size:22px;
+  line-height:1;
+  animation:bounceDown 1.2s ease-in-out infinite;
+}
+.example-toggle.open .toggle-arrow{
+  transform:rotate(180deg);
+  animation:none;
+}
+@keyframes bounceDown{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(4px)}
+}
+.examples-more{
+  display:none;
+  border-top:2px dashed #edf1f2;
+}
+.examples-more.open{
+  display:block;
+  animation:teachRise .25s ease;
 }
 .zh-line{color:#666}
 .actions{
@@ -284,13 +315,13 @@ if("serviceWorker" in navigator){
       <section id="teach" class="teach">
         <p id="exp" class="line"></p>
         <p id="answer" class="answer"></p>
-        <details>
-          <summary>例句</summary>
-          <div class="examples">
-            <div id="eg4"></div>
-            <div id="eg5"></div>
-          </div>
-        </details>
+        <section class="examples-wrap">
+          <div id="examplePreview" class="example-preview examples"></div>
+          <button id="exampleToggle" class="example-toggle" type="button" hidden>
+            <span class="toggle-arrow">⌄</span>
+          </button>
+          <div id="examplesMore" class="examples-more examples"></div>
+        </section>
       </section>
 
       <div class="actions">
@@ -389,6 +420,16 @@ function renderExamples(title,enText,zhText){
   const count=Math.max(en.length,zh.length);
   return `<strong>${title}</strong>${Array.from({length:count},(_,idx)=>`<p>${en[idx]||""}</p><p class="zh-line">${zh[idx]||""}</p>`).join("")}`;
 }
+function getExamplesList(title,enText,zhText){
+  const en=splitEn(enText).map(s=>s.trim()).filter(Boolean);
+  const zh=splitZh(zhText).map(s=>s.trim()).filter(Boolean);
+  const count=Math.max(en.length,zh.length);
+  return Array.from({length:count},(_,idx)=>({
+    title,
+    en:en[idx]||"",
+    zh:zh[idx]||""
+  })).filter(item=>item.en||item.zh);
+}
 function shuffle(arr){
   const copy=[...arr];
   for(let i=copy.length-1;i>0;i--){
@@ -470,8 +511,19 @@ function renderTeach(item,correct,isCorrect,chosen){
   const data={...fallback,...item};
   $("exp").textContent=data.exp||data.note||"";
   $("answer").textContent=isCorrect?`正確：${correct}`:`你的答案：${chosen}  正確：${correct}`;
-  $("eg4").innerHTML=renderExamples("Level 4",data.l4en,data.l4zh);
-  $("eg5").innerHTML=renderExamples("Level 5",data.l5en,data.l5zh);
+  const allExamples=[
+    ...getExamplesList("Level 4",data.l4en,data.l4zh),
+    ...getExamplesList("Level 5",data.l5en,data.l5zh)
+  ];
+  const first=allExamples[0];
+  const rest=allExamples.slice(1);
+  $("examplePreview").innerHTML=first
+    ? `<strong>${first.title}</strong><p>${first.en}</p><p class="zh-line">${first.zh}</p>`
+    : "";
+  $("examplesMore").innerHTML=rest.map(example=>`<strong>${example.title}</strong><p>${example.en}</p><p class="zh-line">${example.zh}</p>`).join("");
+  $("examplesMore").classList.remove("open");
+  $("exampleToggle").classList.remove("open");
+  $("exampleToggle").hidden=rest.length===0;
   $("teach").style.display="block";
 }
 function showEnd(){
@@ -498,10 +550,15 @@ $("nextBtn").addEventListener("click",()=>{
   index++;
   showQuestion();
 });
+$("exampleToggle").addEventListener("click",()=>{
+  const isOpen=$("examplesMore").classList.toggle("open");
+  $("exampleToggle").classList.toggle("open",isOpen);
+  sfx.tap();
+});
 document.addEventListener("pointerdown",unlockAudio,{once:true});
 document.addEventListener("click",event=>{
   const target=event.target;
-  if(target.closest(".choice")||target.closest(".btn")||target.closest(".back")||target.closest("summary")){
+  if(target.closest(".choice")||target.closest(".btn")||target.closest(".back")){
     sfx.tap();
   }
 });
