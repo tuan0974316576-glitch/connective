@@ -121,29 +121,6 @@ body{
   from{opacity:0;transform:rotateY(-18deg) translateX(-10px) scale(.98)}
   to{opacity:1;transform:rotateY(0) translateX(0) scale(1)}
 }
-.chip{
-  display:inline-block;
-  min-width:60px;
-  padding:6px 12px;
-  border-radius:999px;
-  background:var(--primary);
-  color:#fff;
-  text-align:center;
-  font-size:11px;
-  font-weight:900;
-}
-.zh{
-  margin:12px 0 6px;
-  font-size:25px;
-  line-height:1.12;
-  font-weight:900;
-  color:var(--primary-dark);
-}
-.pattern{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.45;
-}
 .answer{
   margin-top:12px;
   background:#fffdf5;
@@ -151,17 +128,13 @@ body{
   border-radius:22px;
   padding:12px;
 }
-.answer-label,.note-label,.eg-label{
+.note-label,.eg-label{
   display:inline-block;
   margin-bottom:8px;
   padding:5px 10px;
   border-radius:999px;
   font-size:11px;
   font-weight:900;
-}
-.answer-label{
-  background:var(--secondary);
-  color:#6b5400;
 }
 .note-label{
   background:var(--soft-blue);
@@ -172,6 +145,20 @@ body{
   color:#d15f5f;
 }
 .answer-text{
+  font-size:17px;
+  line-height:1.42;
+  font-weight:900;
+  color:var(--primary-dark);
+}
+.answer-zh{
+  margin:0 0 6px;
+  font-size:24px;
+  line-height:1.14;
+  font-weight:900;
+  color:#8a6a00;
+}
+.answer-en{
+  margin:0;
   font-size:17px;
   line-height:1.42;
   font-weight:900;
@@ -557,13 +544,9 @@ function renderCard(direction="right"){
   const display=data.display||data.pattern||"";
   $("card").className=`card is-entering-${direction}`;
   $("card").innerHTML=`
-    <span class="chip">${escapeHtml(String(data.id))}</span>
-    <h1 class="zh">${escapeHtml(data.zh||"")}</h1>
-    <div class="pattern">${escapeHtml(data.pattern||"")}</div>
-
     <section class="answer">
-      <span class="answer-label">CORE</span>
-      <div class="answer-text">${escapeHtml(display)}</div>
+      <p class="answer-zh">${escapeHtml(data.zh||"")}</p>
+      <p class="answer-en">${escapeHtml(display)}</p>
     </section>
 
     <section class="note">
