@@ -247,24 +247,21 @@ body{
   0%,100%{transform:translateY(-50%)}
   50%{transform:translateY(calc(-50% - 3px))}
 }
-.dots{
-  display:flex;
-  justify-content:center;
-  gap:7px;
-  padding:0 6px;
-  overflow:hidden;
-}
-.dot{
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:#d9e6e8;
-  flex:0 0 auto;
-}
-.dot.active{
-  width:20px;
+.progress{
+  width:min(220px,56vw);
+  height:12px;
   border-radius:999px;
-  background:var(--primary);
+  border:2px dashed var(--line);
+  background:#fff;
+  overflow:hidden;
+  box-shadow:0 4px 0 #f0f0f0;
+}
+.progress-fill{
+  height:100%;
+  width:0%;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--primary),#8fd8e8);
+  transition:width .25s ease;
 }
 .fab{
   position:fixed;
@@ -306,17 +303,31 @@ body{
   border-radius:26px;
   box-shadow:0 0 0 6px #fff,0 12px 26px rgba(78,205,196,.18);
   overflow:hidden;
-  display:none;
-  z-index:25;
-}
-.drawer.open{
   display:flex;
   flex-direction:column;
-  animation:drawerIn .24s ease;
+  z-index:25;
+  opacity:0;
+  pointer-events:none;
+  transform-origin:bottom right;
+  transform:translateY(12px) scale(.08);
+}
+.drawer.open{
+  opacity:1;
+  pointer-events:auto;
+  animation:drawerIn .24s ease forwards;
+}
+.drawer.closing{
+  opacity:1;
+  pointer-events:none;
+  animation:drawerOut .2s ease forwards;
 }
 @keyframes drawerIn{
-  from{opacity:0;transform:translateY(12px) scale(.96)}
+  from{opacity:0;transform:translateY(12px) scale(.08)}
   to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes drawerOut{
+  from{opacity:1;transform:translateY(0) scale(1)}
+  to{opacity:0;transform:translateY(12px) scale(.08)}
 }
 .drawer-head{
   display:flex;
@@ -382,11 +393,15 @@ body{
   position:fixed;
   inset:0;
   background:rgba(253,251,247,.58);
-  display:none;
+  display:block;
+  opacity:0;
+  pointer-events:none;
   z-index:24;
+  transition:opacity .2s ease;
 }
 .overlay.open{
-  display:block;
+  opacity:1;
+  pointer-events:auto;
 }
 @media(min-width:700px){
   body{padding:24px}
@@ -427,7 +442,7 @@ if("serviceWorker" in navigator){
         <path d="M50 16 L26 40 L50 64"></path>
       </svg>
     </button>
-    <div id="dots" class="dots"></div>
+    <div class="progress"><div id="progressFill" class="progress-fill"></div></div>
     <button id="nextBtn" class="nav-btn right" type="button" aria-label="下一張">
       <svg viewBox="0 0 80 80" aria-hidden="true">
         <path d="M30 16 L54 40 L30 64"></path>
@@ -456,6 +471,7 @@ const fallback={
 let bank=[];
 let currentIndex=0;
 let isAnimating=false;
+let isDrawerClosing=false;
 const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
 function unlockAudio(){if(audioCtx.state==="suspended")audioCtx.resume().catch(()=>{})}
 function blip(freq,type,duration,volume=.055){
@@ -515,17 +531,10 @@ function renderExamples(title,enText,zhText){
     </div>
   `;
 }
-function renderDots(){
-  const dots=$("dots");
-  const maxDots=Math.min(bank.length,9);
-  let start=0;
-  if(bank.length>maxDots){
-    start=Math.max(0,Math.min(currentIndex-4,bank.length-maxDots));
-  }
-  dots.innerHTML=Array.from({length:maxDots},(_,i)=>{
-    const idx=start+i;
-    return `<span class="dot ${idx===currentIndex?"active":""}"></span>`;
-  }).join("");
+function renderProgress(){
+  const total=bank.length||1;
+  const ratio=((currentIndex+1)/total)*100;
+  $("progressFill").style.width=`${ratio}%`;
 }
 function renderDrawer(){
   $("drawerList").innerHTML=bank.map((item,idx)=>`
@@ -566,7 +575,7 @@ function renderCard(direction="right"){
   $("count").textContent=`${currentIndex+1} / ${bank.length}`;
   $("prevBtn").hidden=currentIndex===0;
   $("nextBtn").hidden=currentIndex===bank.length-1;
-  renderDots();
+  renderProgress();
   renderDrawer();
   setTimeout(()=>{
     $("card").className="card";
@@ -593,7 +602,9 @@ function jumpTo(target){
   animateTo(target,target>currentIndex?"right":"left");
 }
 function openDrawer(){
+  if(isDrawerClosing) return;
   sfx.drawerOpen();
+  $("drawer").classList.remove("closing");
   $("drawer").classList.add("open");
   $("overlay").classList.add("open");
   $("drawer").setAttribute("aria-hidden","false");
@@ -601,12 +612,19 @@ function openDrawer(){
   $("drawerToggle").classList.add("open");
 }
 function closeDrawer(){
-  if($("drawer").classList.contains("open")) sfx.drawerClose();
+  if(!$("drawer").classList.contains("open") || isDrawerClosing) return;
+  isDrawerClosing=true;
+  sfx.drawerClose();
   $("drawer").classList.remove("open");
+  $("drawer").classList.add("closing");
   $("overlay").classList.remove("open");
   $("drawer").setAttribute("aria-hidden","true");
   $("drawerToggle").textContent="▸";
   $("drawerToggle").classList.remove("open");
+  setTimeout(()=>{
+    $("drawer").classList.remove("closing");
+    isDrawerClosing=false;
+  },200);
 }
 function toggleDrawer(){
   if($("drawer").classList.contains("open")) closeDrawer();
